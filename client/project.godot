@@ -16,8 +16,8 @@ config/icon="res://icon.svg"
 
 [autoload]
 
-WS="*res://websockets.cs"
-GameManager="*res://GameManager.cs"
+WS="*res://Globals/Websocket/websockets.cs"
+GameManager="*res://Globals/GameManager/GameManager.cs"
 
 [dotnet]
 

@@ -89,7 +89,7 @@ func (c *Connected) HandleRegisterRequest(id uint64, message *packets.Packet_Reg
 		return
 	}
 
-	if _, err = c.queries.GetUserByUsername(c.dbCtx, strings.ToLower(username)); err != nil {
+	if _, err = c.queries.GetUserByUsername(c.dbCtx, strings.ToLower(username)); err == nil {
 		c.logger.Printf("Username already taken: %v", err)
 		c.client.SocketSend(packets.NewDeny("Username already taken"))
 		return

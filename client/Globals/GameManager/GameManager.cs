@@ -7,12 +7,14 @@ public partial class GameManager : Node
     public enum state
     {
         Entered,
+        Connected,
         InGame,
     }
     public Dictionary<state, string> stateScenes = new Dictionary<state, string>()
     {
         { state.Entered, "res://states/entered/entered.tscn" },
-        { state.InGame, "res://states/ingame/inGame.tscn" }
+        { state.InGame, "res://states/ingame/inGame.tscn" },
+        { state.Connected, "res://states/connected/connected.tscn" }
     };
 
     public ulong clientId;

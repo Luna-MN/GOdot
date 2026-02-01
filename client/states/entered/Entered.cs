@@ -40,6 +40,6 @@ public partial class Entered : Node
     {
         globals.GM.clientId = msg.Id;
         log.info($"Client ID: {globals.GM.clientId}");
-        globals.GM.SetState(GameManager.state.InGame);
+        globals.GM.SetState(GameManager.state.Connected);
     }
 }
