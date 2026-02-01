@@ -29,6 +29,11 @@ func (h *Hub) NewDbTx() *DbTx {
 	}
 }
 
+type SharedGameObjects struct {
+	// ID of the player is the ID of the client
+	Players *objects.SharedCollection[*objects.Player]
+}
+
 // A structure for a state macgine to process the client's messages
 type ClientStateHandler interface {
 	Name() string
@@ -70,6 +75,8 @@ type ClientInterfacer interface {
 	// DbTx A reference to the database transation context for this client
 	DbTx() *DbTx
 
+	SharedGameObjects() *SharedGameObjects
+
 	// Close closes the connection
 	Close(reason string)
 }
@@ -88,6 +95,8 @@ type Hub struct {
 	UnregisterChan chan ClientInterfacer
 
 	dbPool *sql.DB
+
+	SharedGameObjects *SharedGameObjects
 }
 
 func NewHub() *Hub {
@@ -101,6 +110,9 @@ func NewHub() *Hub {
 		RegisterChan:   make(chan ClientInterfacer),
 		UnregisterChan: make(chan ClientInterfacer),
 		dbPool:         dbPool,
+		SharedGameObjects: &SharedGameObjects{
+			Players: objects.NewSharedCollection[*objects.Player](),
+		},
 	}
 }
 

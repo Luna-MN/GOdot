@@ -6,6 +6,7 @@ import (
 	"log"
 	"server/internal/server"
 	"server/internal/server/db"
+	"server/internal/server/objects"
 	"server/pkg/packets"
 	"strings"
 
@@ -73,6 +74,16 @@ func (c *Connected) HandleLoginRequest(id uint64, message *packets.Packet_LoginR
 
 	c.logger.Printf("Login successful for user %s", username)
 	c.client.SocketSend(packets.NewOK())
+
+	c.client.SetState(&inGame{
+		client: c.client,
+		player: &objects.Player{
+			Name: username,
+		},
+		logger:  c.logger,
+		queries: c.queries,
+		dbCtx:   c.dbCtx,
+	})
 }
 
 func (c *Connected) HandleRegisterRequest(id uint64, message *packets.Packet_RegisterRequest) {

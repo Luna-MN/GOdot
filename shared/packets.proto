@@ -9,6 +9,8 @@ message LoginRequestMessage { string username = 1; string password = 2; }
 message RegisterRequestMessage { string username = 1; string password = 2; }
 message OkResponseMessage { }
 message DenyResponseMessage { string reason = 1; }
+message PlayerMessage { uint64 id = 1; string name = 2; double x = 3; double y = 4; double z = 5; double direction = 6; double speed = 7;}
+message PlayerDirectionMessage  { double direction = 1; }
 // more message types here
 
 
@@ -24,6 +26,8 @@ message Packet {
         RegisterRequestMessage registerRequest = 5;
         OkResponseMessage OK = 6;
         DenyResponseMessage Deny = 7;
+        PlayerMessage Player = 8;
+        PlayerDirectionMessage player_direction = 9;
         //...
     }
 }
