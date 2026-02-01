@@ -1,0 +1,12 @@
+[gd_scene load_steps=3 format=3 uid="uid://bl640n4a6l7so"]
+
+[ext_resource type="Script" uid="uid://dxi0ld8aa7r3l" path="res://states/entered/Entered.cs" id="1_jjk2u"]
+[ext_resource type="PackedScene" uid="uid://ceul7nhtxbjd7" path="res://Classes/Log/log.tscn" id="2_ltgjr"]
+
+[node name="Entered" type="Node" node_paths=PackedStringArray("log")]
+script = ExtResource("1_jjk2u")
+log = NodePath("UI/Log_Entered")
+
+[node name="UI" type="CanvasLayer" parent="."]
+
+[node name="Log_Entered" parent="UI" instance=ExtResource("2_ltgjr")]

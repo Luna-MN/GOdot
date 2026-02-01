@@ -1,0 +1,29 @@
+﻿syntax = "proto3";
+
+package packets;
+option go_package = "pkg/packets";
+
+message ChatMessage { string msg = 1; }
+message IdMessage { uint64 id = 1; }
+message LoginRequestMessage { string username = 1; string password = 2; }
+message RegisterRequestMessage { string username = 1; string password = 2; }
+message OkResponseMessage { }
+message DenyResponseMessage { string reason = 1; }
+// more message types here
+
+
+// protoc -I="shared" --go_out="server" "shared/packets.proto"
+// protoc -I="shared" --csharp_out="client" "shared/packets.proto"
+
+message Packet {
+    uint64 sender_id = 1;
+    oneof msg {
+        ChatMessage chat = 2;
+        IdMessage id = 3;
+        LoginRequestMessage loginRequest = 4;
+        RegisterRequestMessage registerRequest = 5;
+        OkResponseMessage OK = 6;
+        DenyResponseMessage Deny = 7;
+        //...
+    }
+}
