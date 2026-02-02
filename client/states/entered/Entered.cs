@@ -2,9 +2,9 @@ using Godot;
 using System;
 using Packets;
 
-public partial class Entered : Node
+public partial class Entered : Node, state
 {
-    [Export] private Log log;
+    [Export] public Log log { get; set; }
 
     public override void _Ready()
     {
@@ -26,6 +26,7 @@ public partial class Entered : Node
     {
         log.warning("Connection closed.");
     }
+    
 
     public void OnPacketReceived(Packet packet)
     {

@@ -2,18 +2,18 @@ using Godot;
 using System;
 using Packets;
 
-public partial class Connected : Node
+public partial class Connected : Node, state
 {
     private Callable ActionOnOkReceived;
     
-    [Export] private Log log;
+    [Export] public Log log { get; set; }
     [Export] private LineEdit Username, Password;
     [Export] private Button LoginButton, RegisterButton;
 
     public override void _Ready()
     {
-        globals.WS.packetRecived += OnWsPacketRecieved;
-        globals.WS.connectionClosed += OnWsConnectionClosed;
+        globals.WS.packetRecived += OnPacketReceived;
+        globals.WS.connectionClosed += OnWSConnectionClosed;
 
         LoginButton.Pressed += OnLoginPressed;
         RegisterButton.Pressed += OnRegisterPressed;
@@ -33,7 +33,7 @@ public partial class Connected : Node
         ActionOnOkReceived = Callable.From(() => log.success("Registered successfully."));
     }
 
-    private void OnWsPacketRecieved(Packet obj)
+    public void OnPacketReceived(Packet obj)
     {
         var senderId = obj.SenderId;
         if (obj.MsgCase == Packet.MsgOneofCase.Deny)
@@ -45,7 +45,7 @@ public partial class Connected : Node
             ActionOnOkReceived.Call();
         }
     }
-    private void OnWsConnectionClosed()
+    public void OnWSConnectionClosed()
     {
         log.warning("Connection closed.");
     }

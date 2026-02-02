@@ -3,9 +3,9 @@ using System;
 using System.Collections.Generic;
 using Packets;
 
-public partial class InGame : Node
+public partial class InGame : Node, state
 {
-    [Export] private Log log;
+    [Export] public Log log { get; set; }
     [Export] private LineEdit chatInput;
     [Export] private Node3D world;
     private Dictionary<ulong, Player> Players = new Dictionary<ulong, Player>();
