@@ -41,10 +41,10 @@ func NewPlayer(id uint64, player *objects.Player) Msg {
 		Player: &PlayerMessage{
 			Id:    id,
 			Name:  player.Name,
-			X:     float64(player.Position.X),
-			Y:     float64(player.Position.Y),
-			Z:     float64(player.Position.Z),
-			Speed: float64(player.Speed),
+			X:     player.Position.X,
+			Y:     player.Position.Y,
+			Z:     player.Position.Z,
+			Speed: player.Speed,
 		},
 	}
 }

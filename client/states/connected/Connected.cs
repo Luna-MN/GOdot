@@ -2,7 +2,7 @@ using Godot;
 using System;
 using Packets;
 
-public partial class Connected : Node, state
+public partial class Connected : Node, State
 {
     private Callable ActionOnOkReceived;
     
@@ -49,6 +49,9 @@ public partial class Connected : Node, state
     {
         log.warning("Connection closed.");
     }
-
+    public void ExitTree()
+    {
+        ((State)this).ExitTree();
+    }
 
 }

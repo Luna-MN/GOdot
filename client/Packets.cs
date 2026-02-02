@@ -30,9 +30,9 @@ namespace Packets {
             "CSI8ChZSZWdpc3RlclJlcXVlc3RNZXNzYWdlEhAKCHVzZXJuYW1lGAEgASgJ",
             "EhAKCHBhc3N3b3JkGAIgASgJIhMKEU9rUmVzcG9uc2VNZXNzYWdlIiUKE0Rl",
             "bnlSZXNwb25zZU1lc3NhZ2USDgoGcmVhc29uGAEgASgJImwKDVBsYXllck1l",
-            "c3NhZ2USCgoCaWQYASABKAQSDAoEbmFtZRgCIAEoCRIJCgF4GAMgASgBEgkK",
-            "AXkYBCABKAESCQoBehgFIAEoARIRCglkaXJlY3Rpb24YBiABKAESDQoFc3Bl",
-            "ZWQYByABKAEiNQoSUGxheWVySW5wdXRNZXNzYWdlEgkKAXgYASABKAISCQoB",
+            "c3NhZ2USCgoCaWQYASABKAQSDAoEbmFtZRgCIAEoCRIJCgF4GAMgASgCEgkK",
+            "AXkYBCABKAISCQoBehgFIAEoAhIRCglkaXJlY3Rpb24YBiABKAISDQoFc3Bl",
+            "ZWQYByABKAIiNQoSUGxheWVySW5wdXRNZXNzYWdlEgkKAXgYASABKAISCQoB",
             "eRgCIAEoAhIJCgF6GAMgASgCIpMDCgZQYWNrZXQSEQoJc2VuZGVyX2lkGAEg",
             "ASgEEiQKBGNoYXQYAiABKAsyFC5wYWNrZXRzLkNoYXRNZXNzYWdlSAASIAoC",
             "aWQYAyABKAsyEi5wYWNrZXRzLklkTWVzc2FnZUgAEjQKDGxvZ2luUmVxdWVz",
@@ -1363,10 +1363,10 @@ namespace Packets {
 
     /// <summary>Field number for the "x" field.</summary>
     public const int XFieldNumber = 3;
-    private double x_;
+    private float x_;
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
-    public double X {
+    public float X {
       get { return x_; }
       set {
         x_ = value;
@@ -1375,10 +1375,10 @@ namespace Packets {
 
     /// <summary>Field number for the "y" field.</summary>
     public const int YFieldNumber = 4;
-    private double y_;
+    private float y_;
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
-    public double Y {
+    public float Y {
       get { return y_; }
       set {
         y_ = value;
@@ -1387,10 +1387,10 @@ namespace Packets {
 
     /// <summary>Field number for the "z" field.</summary>
     public const int ZFieldNumber = 5;
-    private double z_;
+    private float z_;
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
-    public double Z {
+    public float Z {
       get { return z_; }
       set {
         z_ = value;
@@ -1399,10 +1399,10 @@ namespace Packets {
 
     /// <summary>Field number for the "direction" field.</summary>
     public const int DirectionFieldNumber = 6;
-    private double direction_;
+    private float direction_;
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
-    public double Direction {
+    public float Direction {
       get { return direction_; }
       set {
         direction_ = value;
@@ -1411,10 +1411,10 @@ namespace Packets {
 
     /// <summary>Field number for the "speed" field.</summary>
     public const int SpeedFieldNumber = 7;
-    private double speed_;
+    private float speed_;
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
-    public double Speed {
+    public float Speed {
       get { return speed_; }
       set {
         speed_ = value;
@@ -1438,11 +1438,11 @@ namespace Packets {
       }
       if (Id != other.Id) return false;
       if (Name != other.Name) return false;
-      if (!pbc::ProtobufEqualityComparers.BitwiseDoubleEqualityComparer.Equals(X, other.X)) return false;
-      if (!pbc::ProtobufEqualityComparers.BitwiseDoubleEqualityComparer.Equals(Y, other.Y)) return false;
-      if (!pbc::ProtobufEqualityComparers.BitwiseDoubleEqualityComparer.Equals(Z, other.Z)) return false;
-      if (!pbc::ProtobufEqualityComparers.BitwiseDoubleEqualityComparer.Equals(Direction, other.Direction)) return false;
-      if (!pbc::ProtobufEqualityComparers.BitwiseDoubleEqualityComparer.Equals(Speed, other.Speed)) return false;
+      if (!pbc::ProtobufEqualityComparers.BitwiseSingleEqualityComparer.Equals(X, other.X)) return false;
+      if (!pbc::ProtobufEqualityComparers.BitwiseSingleEqualityComparer.Equals(Y, other.Y)) return false;
+      if (!pbc::ProtobufEqualityComparers.BitwiseSingleEqualityComparer.Equals(Z, other.Z)) return false;
+      if (!pbc::ProtobufEqualityComparers.BitwiseSingleEqualityComparer.Equals(Direction, other.Direction)) return false;
+      if (!pbc::ProtobufEqualityComparers.BitwiseSingleEqualityComparer.Equals(Speed, other.Speed)) return false;
       return Equals(_unknownFields, other._unknownFields);
     }
 
@@ -1452,11 +1452,11 @@ namespace Packets {
       int hash = 1;
       if (Id != 0UL) hash ^= Id.GetHashCode();
       if (Name.Length != 0) hash ^= Name.GetHashCode();
-      if (X != 0D) hash ^= pbc::ProtobufEqualityComparers.BitwiseDoubleEqualityComparer.GetHashCode(X);
-      if (Y != 0D) hash ^= pbc::ProtobufEqualityComparers.BitwiseDoubleEqualityComparer.GetHashCode(Y);
-      if (Z != 0D) hash ^= pbc::ProtobufEqualityComparers.BitwiseDoubleEqualityComparer.GetHashCode(Z);
-      if (Direction != 0D) hash ^= pbc::ProtobufEqualityComparers.BitwiseDoubleEqualityComparer.GetHashCode(Direction);
-      if (Speed != 0D) hash ^= pbc::ProtobufEqualityComparers.BitwiseDoubleEqualityComparer.GetHashCode(Speed);
+      if (X != 0F) hash ^= pbc::ProtobufEqualityComparers.BitwiseSingleEqualityComparer.GetHashCode(X);
+      if (Y != 0F) hash ^= pbc::ProtobufEqualityComparers.BitwiseSingleEqualityComparer.GetHashCode(Y);
+      if (Z != 0F) hash ^= pbc::ProtobufEqualityComparers.BitwiseSingleEqualityComparer.GetHashCode(Z);
+      if (Direction != 0F) hash ^= pbc::ProtobufEqualityComparers.BitwiseSingleEqualityComparer.GetHashCode(Direction);
+      if (Speed != 0F) hash ^= pbc::ProtobufEqualityComparers.BitwiseSingleEqualityComparer.GetHashCode(Speed);
       if (_unknownFields != null) {
         hash ^= _unknownFields.GetHashCode();
       }
@@ -1483,25 +1483,25 @@ namespace Packets {
         output.WriteRawTag(18);
         output.WriteString(Name);
       }
-      if (X != 0D) {
-        output.WriteRawTag(25);
-        output.WriteDouble(X);
+      if (X != 0F) {
+        output.WriteRawTag(29);
+        output.WriteFloat(X);
       }
-      if (Y != 0D) {
-        output.WriteRawTag(33);
-        output.WriteDouble(Y);
+      if (Y != 0F) {
+        output.WriteRawTag(37);
+        output.WriteFloat(Y);
       }
-      if (Z != 0D) {
-        output.WriteRawTag(41);
-        output.WriteDouble(Z);
+      if (Z != 0F) {
+        output.WriteRawTag(45);
+        output.WriteFloat(Z);
       }
-      if (Direction != 0D) {
-        output.WriteRawTag(49);
-        output.WriteDouble(Direction);
+      if (Direction != 0F) {
+        output.WriteRawTag(53);
+        output.WriteFloat(Direction);
       }
-      if (Speed != 0D) {
-        output.WriteRawTag(57);
-        output.WriteDouble(Speed);
+      if (Speed != 0F) {
+        output.WriteRawTag(61);
+        output.WriteFloat(Speed);
       }
       if (_unknownFields != null) {
         _unknownFields.WriteTo(output);
@@ -1521,25 +1521,25 @@ namespace Packets {
         output.WriteRawTag(18);
         output.WriteString(Name);
       }
-      if (X != 0D) {
-        output.WriteRawTag(25);
-        output.WriteDouble(X);
+      if (X != 0F) {
+        output.WriteRawTag(29);
+        output.WriteFloat(X);
       }
-      if (Y != 0D) {
-        output.WriteRawTag(33);
-        output.WriteDouble(Y);
+      if (Y != 0F) {
+        output.WriteRawTag(37);
+        output.WriteFloat(Y);
       }
-      if (Z != 0D) {
-        output.WriteRawTag(41);
-        output.WriteDouble(Z);
+      if (Z != 0F) {
+        output.WriteRawTag(45);
+        output.WriteFloat(Z);
       }
-      if (Direction != 0D) {
-        output.WriteRawTag(49);
-        output.WriteDouble(Direction);
+      if (Direction != 0F) {
+        output.WriteRawTag(53);
+        output.WriteFloat(Direction);
       }
-      if (Speed != 0D) {
-        output.WriteRawTag(57);
-        output.WriteDouble(Speed);
+      if (Speed != 0F) {
+        output.WriteRawTag(61);
+        output.WriteFloat(Speed);
       }
       if (_unknownFields != null) {
         _unknownFields.WriteTo(ref output);
@@ -1557,20 +1557,20 @@ namespace Packets {
       if (Name.Length != 0) {
         size += 1 + pb::CodedOutputStream.ComputeStringSize(Name);
       }
-      if (X != 0D) {
-        size += 1 + 8;
+      if (X != 0F) {
+        size += 1 + 4;
       }
-      if (Y != 0D) {
-        size += 1 + 8;
+      if (Y != 0F) {
+        size += 1 + 4;
       }
-      if (Z != 0D) {
-        size += 1 + 8;
+      if (Z != 0F) {
+        size += 1 + 4;
       }
-      if (Direction != 0D) {
-        size += 1 + 8;
+      if (Direction != 0F) {
+        size += 1 + 4;
       }
-      if (Speed != 0D) {
-        size += 1 + 8;
+      if (Speed != 0F) {
+        size += 1 + 4;
       }
       if (_unknownFields != null) {
         size += _unknownFields.CalculateSize();
@@ -1590,19 +1590,19 @@ namespace Packets {
       if (other.Name.Length != 0) {
         Name = other.Name;
       }
-      if (other.X != 0D) {
+      if (other.X != 0F) {
         X = other.X;
       }
-      if (other.Y != 0D) {
+      if (other.Y != 0F) {
         Y = other.Y;
       }
-      if (other.Z != 0D) {
+      if (other.Z != 0F) {
         Z = other.Z;
       }
-      if (other.Direction != 0D) {
+      if (other.Direction != 0F) {
         Direction = other.Direction;
       }
-      if (other.Speed != 0D) {
+      if (other.Speed != 0F) {
         Speed = other.Speed;
       }
       _unknownFields = pb::UnknownFieldSet.MergeFrom(_unknownFields, other._unknownFields);
@@ -1632,24 +1632,24 @@ namespace Packets {
             Name = input.ReadString();
             break;
           }
-          case 25: {
-            X = input.ReadDouble();
+          case 29: {
+            X = input.ReadFloat();
             break;
           }
-          case 33: {
-            Y = input.ReadDouble();
+          case 37: {
+            Y = input.ReadFloat();
             break;
           }
-          case 41: {
-            Z = input.ReadDouble();
+          case 45: {
+            Z = input.ReadFloat();
             break;
           }
-          case 49: {
-            Direction = input.ReadDouble();
+          case 53: {
+            Direction = input.ReadFloat();
             break;
           }
-          case 57: {
-            Speed = input.ReadDouble();
+          case 61: {
+            Speed = input.ReadFloat();
             break;
           }
         }
@@ -1679,24 +1679,24 @@ namespace Packets {
             Name = input.ReadString();
             break;
           }
-          case 25: {
-            X = input.ReadDouble();
+          case 29: {
+            X = input.ReadFloat();
             break;
           }
-          case 33: {
-            Y = input.ReadDouble();
+          case 37: {
+            Y = input.ReadFloat();
             break;
           }
-          case 41: {
-            Z = input.ReadDouble();
+          case 45: {
+            Z = input.ReadFloat();
             break;
           }
-          case 49: {
-            Direction = input.ReadDouble();
+          case 53: {
+            Direction = input.ReadFloat();
             break;
           }
-          case 57: {
-            Speed = input.ReadDouble();
+          case 61: {
+            Speed = input.ReadFloat();
             break;
           }
         }

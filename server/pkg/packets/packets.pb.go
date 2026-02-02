@@ -297,11 +297,11 @@ type PlayerMessage struct {
 	state         protoimpl.MessageState `protogen:"open.v1"`
 	Id            uint64                 `protobuf:"varint,1,opt,name=id,proto3" json:"id,omitempty"`
 	Name          string                 `protobuf:"bytes,2,opt,name=name,proto3" json:"name,omitempty"`
-	X             float64                `protobuf:"fixed64,3,opt,name=x,proto3" json:"x,omitempty"`
-	Y             float64                `protobuf:"fixed64,4,opt,name=y,proto3" json:"y,omitempty"`
-	Z             float64                `protobuf:"fixed64,5,opt,name=z,proto3" json:"z,omitempty"`
-	Direction     float64                `protobuf:"fixed64,6,opt,name=direction,proto3" json:"direction,omitempty"`
-	Speed         float64                `protobuf:"fixed64,7,opt,name=speed,proto3" json:"speed,omitempty"`
+	X             float32                `protobuf:"fixed32,3,opt,name=x,proto3" json:"x,omitempty"`
+	Y             float32                `protobuf:"fixed32,4,opt,name=y,proto3" json:"y,omitempty"`
+	Z             float32                `protobuf:"fixed32,5,opt,name=z,proto3" json:"z,omitempty"`
+	Direction     float32                `protobuf:"fixed32,6,opt,name=direction,proto3" json:"direction,omitempty"`
+	Speed         float32                `protobuf:"fixed32,7,opt,name=speed,proto3" json:"speed,omitempty"`
 	unknownFields protoimpl.UnknownFields
 	sizeCache     protoimpl.SizeCache
 }
@@ -350,35 +350,35 @@ func (x *PlayerMessage) GetName() string {
 	return ""
 }
 
-func (x *PlayerMessage) GetX() float64 {
+func (x *PlayerMessage) GetX() float32 {
 	if x != nil {
 		return x.X
 	}
 	return 0
 }
 
-func (x *PlayerMessage) GetY() float64 {
+func (x *PlayerMessage) GetY() float32 {
 	if x != nil {
 		return x.Y
 	}
 	return 0
 }
 
-func (x *PlayerMessage) GetZ() float64 {
+func (x *PlayerMessage) GetZ() float32 {
 	if x != nil {
 		return x.Z
 	}
 	return 0
 }
 
-func (x *PlayerMessage) GetDirection() float64 {
+func (x *PlayerMessage) GetDirection() float32 {
 	if x != nil {
 		return x.Direction
 	}
 	return 0
 }
 
-func (x *PlayerMessage) GetSpeed() float64 {
+func (x *PlayerMessage) GetSpeed() float32 {
 	if x != nil {
 		return x.Speed
 	}
@@ -652,11 +652,11 @@ const file_packets_proto_rawDesc = "" +
 	"\rPlayerMessage\x12\x0e\n" +
 	"\x02id\x18\x01 \x01(\x04R\x02id\x12\x12\n" +
 	"\x04name\x18\x02 \x01(\tR\x04name\x12\f\n" +
-	"\x01x\x18\x03 \x01(\x01R\x01x\x12\f\n" +
-	"\x01y\x18\x04 \x01(\x01R\x01y\x12\f\n" +
-	"\x01z\x18\x05 \x01(\x01R\x01z\x12\x1c\n" +
-	"\tdirection\x18\x06 \x01(\x01R\tdirection\x12\x14\n" +
-	"\x05speed\x18\a \x01(\x01R\x05speed\">\n" +
+	"\x01x\x18\x03 \x01(\x02R\x01x\x12\f\n" +
+	"\x01y\x18\x04 \x01(\x02R\x01y\x12\f\n" +
+	"\x01z\x18\x05 \x01(\x02R\x01z\x12\x1c\n" +
+	"\tdirection\x18\x06 \x01(\x02R\tdirection\x12\x14\n" +
+	"\x05speed\x18\a \x01(\x02R\x05speed\">\n" +
 	"\x12PlayerInputMessage\x12\f\n" +
 	"\x01x\x18\x01 \x01(\x02R\x01x\x12\f\n" +
 	"\x01y\x18\x02 \x01(\x02R\x01y\x12\f\n" +

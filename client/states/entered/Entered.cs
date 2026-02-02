@@ -2,7 +2,7 @@ using Godot;
 using System;
 using Packets;
 
-public partial class Entered : Node, state
+public partial class Entered : Node, State
 {
     [Export] public Log log { get; set; }
 
@@ -42,5 +42,10 @@ public partial class Entered : Node, state
         globals.GM.clientId = msg.Id;
         log.info($"Client ID: {globals.GM.clientId}");
         globals.GM.SetState(GameManager.state.Connected);
+    }
+    public void ExitTree()
+    {
+        globals.WS.connectedToServer -= OnWSConnectedToServer;
+        ((State)this).ExitTree();
     }
 }

@@ -3,7 +3,7 @@ using System;
 using System.Collections.Generic;
 using Packets;
 
-public partial class InGame : Node, state
+public partial class InGame : Node, State
 {
     [Export] public Log log { get; set; }
     [Export] private LineEdit chatInput;
@@ -70,5 +70,9 @@ public partial class InGame : Node, state
             log.chat("Me", text);
         }
         chatInput.Clear();
+    }
+    public void ExitTree()
+    {
+        ((State)this).ExitTree();
     }
 }

@@ -36,7 +36,6 @@ public partial class websockets : Node
         }
         
         var data = socket.GetPacket();
-        GD.Print(string.Join(',', data));
         var packet = Packet.Parser.ParseFrom(data);
         
         return packet;
@@ -82,7 +81,6 @@ public partial class websockets : Node
         }
         while (socket.GetReadyState() == WebSocketPeer.State.Open && socket.GetAvailablePacketCount() > 0)
         {
-            GD.Print("recieved packet");
             packetRecived?.Invoke(GetPacket());
         }
     }
