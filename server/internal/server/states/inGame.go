@@ -38,7 +38,7 @@ func (g *inGame) OnEnter() {
 
 	// Set the initial state of the player
 	g.player.Position = objects.NewVector3(0, 0, 0)
-	g.player.Speed = 100
+	g.player.Speed = 25
 
 	// Send the initial state of the player to the client
 	g.client.SocketSend(packets.NewPlayer(g.client.Id(), g.player))
