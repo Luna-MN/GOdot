@@ -16,7 +16,7 @@ import (
 //go:embed db/config/schema.sql
 var schemaGenSql string
 
-// A structure for database transaction context
+// DbTx A structure for database transaction context
 type DbTx struct {
 	Ctx     context.Context
 	Queries *db.Queries
@@ -34,16 +34,16 @@ type SharedGameObjects struct {
 	Players *objects.SharedCollection[*objects.Player]
 }
 
-// A structure for a state macgine to process the client's messages
+// ClientStateHandler A structure for a state macgine to process the client's messages
 type ClientStateHandler interface {
 	Name() string
 
-	//Inject thje client into the state machine
+	// SetClient Inject thje client into the state machine
 	SetClient(client ClientInterfacer)
 
 	OnEnter()
 	HandleMessage(senderId uint64, message packets.Msg)
-	// clean up the state machine
+	// OnExit clean up the state machine
 	OnExit()
 }
 

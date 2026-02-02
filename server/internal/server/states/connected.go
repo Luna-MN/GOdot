@@ -132,7 +132,7 @@ func (c *Connected) HandleRegisterRequest(id uint64, message *packets.Packet_Reg
 func validateUsername(username string) error {
 
 	if len(username) < 3 || len(username) > 20 {
-		return fmt.Errorf("Username must be between 3 and 20 characters long")
+		return fmt.Errorf("username must be between 3 and 20 characters long")
 	}
 
 	return nil

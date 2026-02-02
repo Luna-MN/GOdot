@@ -2,7 +2,7 @@ package objects
 
 import "sync"
 
-// A generic, thread-safe map of objects with IDs
+// SharedCollection A generic, thread-safe map of objects with IDs
 type SharedCollection[t any] struct {
 	objectMap map[uint64]t
 	nextId    uint64
@@ -43,7 +43,7 @@ func (sc *SharedCollection[t]) Remove(id uint64) {
 	delete(sc.objectMap, id)
 }
 
-// Call the callback function for each object in the map
+// ForEach Call the callback function for each object in the map
 func (sc *SharedCollection[t]) ForEach(callback func(id uint64, obj t)) {
 	sc.mapMux.Lock()
 	localMap := make(map[uint64]t, len(sc.objectMap))
@@ -67,7 +67,7 @@ func (sc *SharedCollection[t]) Get(id uint64) (t, bool) {
 	return obj, ok
 }
 
-// Get the number of objects in the map
+// Len Get the number of objects in the map
 func (sc *SharedCollection[t]) Len() int {
 	sc.mapMux.Lock()
 	defer sc.mapMux.Unlock()

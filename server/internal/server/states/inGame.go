@@ -35,8 +35,7 @@ func (g *inGame) OnEnter() {
 	go g.client.SharedGameObjects().Players.Add(g.player, g.client.Id())
 
 	// Set the initial state of the player
-	g.player.X = 0
-	g.player.Y = 0
+	g.player.Position = objects.NewVector3(0, 0, 0)
 	g.player.Speed = 150
 
 	// Send the initial state of the player to the client

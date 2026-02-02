@@ -180,7 +180,10 @@ func (c *WebSocketClient) Close(reason string) {
 	c.SetState(nil)
 
 	c.hub.UnregisterChan <- c
-	c.conn.Close()
+	err := c.conn.Close()
+	if err != nil {
+		return
+	}
 	if _, closed := <-c.sendChan; !closed {
 		close(c.sendChan)
 	}
