@@ -39,13 +39,12 @@ func NewDeny(reason string) Msg {
 func NewPlayer(id uint64, player *objects.Player) Msg {
 	return &Packet_Player{
 		Player: &PlayerMessage{
-			Id:        id,
-			Name:      player.Name,
-			X:         player.Position.X,
-			Y:         player.Position.Y,
-			Z:         player.Position.Z,
-			Direction: player.Direction,
-			Speed:     player.Speed,
+			Id:    id,
+			Name:  player.Name,
+			X:     float64(player.Position.X),
+			Y:     float64(player.Position.Y),
+			Z:     float64(player.Position.Z),
+			Speed: float64(player.Speed),
 		},
 	}
 }

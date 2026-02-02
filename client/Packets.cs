@@ -32,17 +32,17 @@ namespace Packets {
             "bnlSZXNwb25zZU1lc3NhZ2USDgoGcmVhc29uGAEgASgJImwKDVBsYXllck1l",
             "c3NhZ2USCgoCaWQYASABKAQSDAoEbmFtZRgCIAEoCRIJCgF4GAMgASgBEgkK",
             "AXkYBCABKAESCQoBehgFIAEoARIRCglkaXJlY3Rpb24YBiABKAESDQoFc3Bl",
-            "ZWQYByABKAEiKwoWUGxheWVyRGlyZWN0aW9uTWVzc2FnZRIRCglkaXJlY3Rp",
-            "b24YASABKAEimwMKBlBhY2tldBIRCglzZW5kZXJfaWQYASABKAQSJAoEY2hh",
-            "dBgCIAEoCzIULnBhY2tldHMuQ2hhdE1lc3NhZ2VIABIgCgJpZBgDIAEoCzIS",
-            "LnBhY2tldHMuSWRNZXNzYWdlSAASNAoMbG9naW5SZXF1ZXN0GAQgASgLMhwu",
-            "cGFja2V0cy5Mb2dpblJlcXVlc3RNZXNzYWdlSAASOgoPcmVnaXN0ZXJSZXF1",
-            "ZXN0GAUgASgLMh8ucGFja2V0cy5SZWdpc3RlclJlcXVlc3RNZXNzYWdlSAAS",
-            "KAoCT0sYBiABKAsyGi5wYWNrZXRzLk9rUmVzcG9uc2VNZXNzYWdlSAASLAoE",
-            "RGVueRgHIAEoCzIcLnBhY2tldHMuRGVueVJlc3BvbnNlTWVzc2FnZUgAEigK",
-            "BlBsYXllchgIIAEoCzIWLnBhY2tldHMuUGxheWVyTWVzc2FnZUgAEjsKEHBs",
-            "YXllcl9kaXJlY3Rpb24YCSABKAsyHy5wYWNrZXRzLlBsYXllckRpcmVjdGlv",
-            "bk1lc3NhZ2VIAEIFCgNtc2dCDVoLcGtnL3BhY2tldHNiBnByb3RvMw=="));
+            "ZWQYByABKAEiNQoSUGxheWVySW5wdXRNZXNzYWdlEgkKAXgYASABKAISCQoB",
+            "eRgCIAEoAhIJCgF6GAMgASgCIpMDCgZQYWNrZXQSEQoJc2VuZGVyX2lkGAEg",
+            "ASgEEiQKBGNoYXQYAiABKAsyFC5wYWNrZXRzLkNoYXRNZXNzYWdlSAASIAoC",
+            "aWQYAyABKAsyEi5wYWNrZXRzLklkTWVzc2FnZUgAEjQKDGxvZ2luUmVxdWVz",
+            "dBgEIAEoCzIcLnBhY2tldHMuTG9naW5SZXF1ZXN0TWVzc2FnZUgAEjoKD3Jl",
+            "Z2lzdGVyUmVxdWVzdBgFIAEoCzIfLnBhY2tldHMuUmVnaXN0ZXJSZXF1ZXN0",
+            "TWVzc2FnZUgAEigKAk9LGAYgASgLMhoucGFja2V0cy5Pa1Jlc3BvbnNlTWVz",
+            "c2FnZUgAEiwKBERlbnkYByABKAsyHC5wYWNrZXRzLkRlbnlSZXNwb25zZU1l",
+            "c3NhZ2VIABIoCgZQbGF5ZXIYCCABKAsyFi5wYWNrZXRzLlBsYXllck1lc3Nh",
+            "Z2VIABIzCgxwbGF5ZXJfaW5wdXQYCSABKAsyGy5wYWNrZXRzLlBsYXllcklu",
+            "cHV0TWVzc2FnZUgAQgUKA21zZ0INWgtwa2cvcGFja2V0c2IGcHJvdG8z"));
       descriptor = pbr::FileDescriptor.FromGeneratedCode(descriptorData,
           new pbr::FileDescriptor[] { },
           new pbr::GeneratedClrTypeInfo(null, null, new pbr::GeneratedClrTypeInfo[] {
@@ -53,8 +53,8 @@ namespace Packets {
             new pbr::GeneratedClrTypeInfo(typeof(global::Packets.OkResponseMessage), global::Packets.OkResponseMessage.Parser, null, null, null, null, null),
             new pbr::GeneratedClrTypeInfo(typeof(global::Packets.DenyResponseMessage), global::Packets.DenyResponseMessage.Parser, new[]{ "Reason" }, null, null, null, null),
             new pbr::GeneratedClrTypeInfo(typeof(global::Packets.PlayerMessage), global::Packets.PlayerMessage.Parser, new[]{ "Id", "Name", "X", "Y", "Z", "Direction", "Speed" }, null, null, null, null),
-            new pbr::GeneratedClrTypeInfo(typeof(global::Packets.PlayerDirectionMessage), global::Packets.PlayerDirectionMessage.Parser, new[]{ "Direction" }, null, null, null, null),
-            new pbr::GeneratedClrTypeInfo(typeof(global::Packets.Packet), global::Packets.Packet.Parser, new[]{ "SenderId", "Chat", "Id", "LoginRequest", "RegisterRequest", "OK", "Deny", "Player", "PlayerDirection" }, new[]{ "Msg" }, null, null, null)
+            new pbr::GeneratedClrTypeInfo(typeof(global::Packets.PlayerInputMessage), global::Packets.PlayerInputMessage.Parser, new[]{ "X", "Y", "Z" }, null, null, null, null),
+            new pbr::GeneratedClrTypeInfo(typeof(global::Packets.Packet), global::Packets.Packet.Parser, new[]{ "SenderId", "Chat", "Id", "LoginRequest", "RegisterRequest", "OK", "Deny", "Player", "PlayerInput" }, new[]{ "Msg" }, null, null, null)
           }));
     }
     #endregion
@@ -1707,16 +1707,16 @@ namespace Packets {
   }
 
   [global::System.Diagnostics.DebuggerDisplayAttribute("{ToString(),nq}")]
-  public sealed partial class PlayerDirectionMessage : pb::IMessage<PlayerDirectionMessage>
+  public sealed partial class PlayerInputMessage : pb::IMessage<PlayerInputMessage>
   #if !GOOGLE_PROTOBUF_REFSTRUCT_COMPATIBILITY_MODE
       , pb::IBufferMessage
   #endif
   {
-    private static readonly pb::MessageParser<PlayerDirectionMessage> _parser = new pb::MessageParser<PlayerDirectionMessage>(() => new PlayerDirectionMessage());
+    private static readonly pb::MessageParser<PlayerInputMessage> _parser = new pb::MessageParser<PlayerInputMessage>(() => new PlayerInputMessage());
     private pb::UnknownFieldSet _unknownFields;
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
-    public static pb::MessageParser<PlayerDirectionMessage> Parser { get { return _parser; } }
+    public static pb::MessageParser<PlayerInputMessage> Parser { get { return _parser; } }
 
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
@@ -1732,7 +1732,7 @@ namespace Packets {
 
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
-    public PlayerDirectionMessage() {
+    public PlayerInputMessage() {
       OnConstruction();
     }
 
@@ -1740,45 +1740,73 @@ namespace Packets {
 
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
-    public PlayerDirectionMessage(PlayerDirectionMessage other) : this() {
-      direction_ = other.direction_;
+    public PlayerInputMessage(PlayerInputMessage other) : this() {
+      x_ = other.x_;
+      y_ = other.y_;
+      z_ = other.z_;
       _unknownFields = pb::UnknownFieldSet.Clone(other._unknownFields);
     }
 
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
-    public PlayerDirectionMessage Clone() {
-      return new PlayerDirectionMessage(this);
+    public PlayerInputMessage Clone() {
+      return new PlayerInputMessage(this);
     }
 
-    /// <summary>Field number for the "direction" field.</summary>
-    public const int DirectionFieldNumber = 1;
-    private double direction_;
+    /// <summary>Field number for the "x" field.</summary>
+    public const int XFieldNumber = 1;
+    private float x_;
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
-    public double Direction {
-      get { return direction_; }
+    public float X {
+      get { return x_; }
       set {
-        direction_ = value;
+        x_ = value;
+      }
+    }
+
+    /// <summary>Field number for the "y" field.</summary>
+    public const int YFieldNumber = 2;
+    private float y_;
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
+    public float Y {
+      get { return y_; }
+      set {
+        y_ = value;
+      }
+    }
+
+    /// <summary>Field number for the "z" field.</summary>
+    public const int ZFieldNumber = 3;
+    private float z_;
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
+    public float Z {
+      get { return z_; }
+      set {
+        z_ = value;
       }
     }
 
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
     public override bool Equals(object other) {
-      return Equals(other as PlayerDirectionMessage);
+      return Equals(other as PlayerInputMessage);
     }
 
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
-    public bool Equals(PlayerDirectionMessage other) {
+    public bool Equals(PlayerInputMessage other) {
       if (ReferenceEquals(other, null)) {
         return false;
       }
       if (ReferenceEquals(other, this)) {
         return true;
       }
-      if (!pbc::ProtobufEqualityComparers.BitwiseDoubleEqualityComparer.Equals(Direction, other.Direction)) return false;
+      if (!pbc::ProtobufEqualityComparers.BitwiseSingleEqualityComparer.Equals(X, other.X)) return false;
+      if (!pbc::ProtobufEqualityComparers.BitwiseSingleEqualityComparer.Equals(Y, other.Y)) return false;
+      if (!pbc::ProtobufEqualityComparers.BitwiseSingleEqualityComparer.Equals(Z, other.Z)) return false;
       return Equals(_unknownFields, other._unknownFields);
     }
 
@@ -1786,7 +1814,9 @@ namespace Packets {
     [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
     public override int GetHashCode() {
       int hash = 1;
-      if (Direction != 0D) hash ^= pbc::ProtobufEqualityComparers.BitwiseDoubleEqualityComparer.GetHashCode(Direction);
+      if (X != 0F) hash ^= pbc::ProtobufEqualityComparers.BitwiseSingleEqualityComparer.GetHashCode(X);
+      if (Y != 0F) hash ^= pbc::ProtobufEqualityComparers.BitwiseSingleEqualityComparer.GetHashCode(Y);
+      if (Z != 0F) hash ^= pbc::ProtobufEqualityComparers.BitwiseSingleEqualityComparer.GetHashCode(Z);
       if (_unknownFields != null) {
         hash ^= _unknownFields.GetHashCode();
       }
@@ -1805,9 +1835,17 @@ namespace Packets {
     #if !GOOGLE_PROTOBUF_REFSTRUCT_COMPATIBILITY_MODE
       output.WriteRawMessage(this);
     #else
-      if (Direction != 0D) {
-        output.WriteRawTag(9);
-        output.WriteDouble(Direction);
+      if (X != 0F) {
+        output.WriteRawTag(13);
+        output.WriteFloat(X);
+      }
+      if (Y != 0F) {
+        output.WriteRawTag(21);
+        output.WriteFloat(Y);
+      }
+      if (Z != 0F) {
+        output.WriteRawTag(29);
+        output.WriteFloat(Z);
       }
       if (_unknownFields != null) {
         _unknownFields.WriteTo(output);
@@ -1819,9 +1857,17 @@ namespace Packets {
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
     void pb::IBufferMessage.InternalWriteTo(ref pb::WriteContext output) {
-      if (Direction != 0D) {
-        output.WriteRawTag(9);
-        output.WriteDouble(Direction);
+      if (X != 0F) {
+        output.WriteRawTag(13);
+        output.WriteFloat(X);
+      }
+      if (Y != 0F) {
+        output.WriteRawTag(21);
+        output.WriteFloat(Y);
+      }
+      if (Z != 0F) {
+        output.WriteRawTag(29);
+        output.WriteFloat(Z);
       }
       if (_unknownFields != null) {
         _unknownFields.WriteTo(ref output);
@@ -1833,8 +1879,14 @@ namespace Packets {
     [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
     public int CalculateSize() {
       int size = 0;
-      if (Direction != 0D) {
-        size += 1 + 8;
+      if (X != 0F) {
+        size += 1 + 4;
+      }
+      if (Y != 0F) {
+        size += 1 + 4;
+      }
+      if (Z != 0F) {
+        size += 1 + 4;
       }
       if (_unknownFields != null) {
         size += _unknownFields.CalculateSize();
@@ -1844,12 +1896,18 @@ namespace Packets {
 
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
-    public void MergeFrom(PlayerDirectionMessage other) {
+    public void MergeFrom(PlayerInputMessage other) {
       if (other == null) {
         return;
       }
-      if (other.Direction != 0D) {
-        Direction = other.Direction;
+      if (other.X != 0F) {
+        X = other.X;
+      }
+      if (other.Y != 0F) {
+        Y = other.Y;
+      }
+      if (other.Z != 0F) {
+        Z = other.Z;
       }
       _unknownFields = pb::UnknownFieldSet.MergeFrom(_unknownFields, other._unknownFields);
     }
@@ -1870,8 +1928,16 @@ namespace Packets {
           default:
             _unknownFields = pb::UnknownFieldSet.MergeFieldFrom(_unknownFields, input);
             break;
-          case 9: {
-            Direction = input.ReadDouble();
+          case 13: {
+            X = input.ReadFloat();
+            break;
+          }
+          case 21: {
+            Y = input.ReadFloat();
+            break;
+          }
+          case 29: {
+            Z = input.ReadFloat();
             break;
           }
         }
@@ -1893,8 +1959,16 @@ namespace Packets {
           default:
             _unknownFields = pb::UnknownFieldSet.MergeFieldFrom(_unknownFields, ref input);
             break;
-          case 9: {
-            Direction = input.ReadDouble();
+          case 13: {
+            X = input.ReadFloat();
+            break;
+          }
+          case 21: {
+            Y = input.ReadFloat();
+            break;
+          }
+          case 29: {
+            Z = input.ReadFloat();
             break;
           }
         }
@@ -1962,8 +2036,8 @@ namespace Packets {
         case MsgOneofCase.Player:
           Player = other.Player.Clone();
           break;
-        case MsgOneofCase.PlayerDirection:
-          PlayerDirection = other.PlayerDirection.Clone();
+        case MsgOneofCase.PlayerInput:
+          PlayerInput = other.PlayerInput.Clone();
           break;
       }
 
@@ -2072,18 +2146,18 @@ namespace Packets {
       }
     }
 
-    /// <summary>Field number for the "player_direction" field.</summary>
-    public const int PlayerDirectionFieldNumber = 9;
+    /// <summary>Field number for the "player_input" field.</summary>
+    public const int PlayerInputFieldNumber = 9;
     /// <summary>
     ///...
     /// </summary>
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
-    public global::Packets.PlayerDirectionMessage PlayerDirection {
-      get { return msgCase_ == MsgOneofCase.PlayerDirection ? (global::Packets.PlayerDirectionMessage) msg_ : null; }
+    public global::Packets.PlayerInputMessage PlayerInput {
+      get { return msgCase_ == MsgOneofCase.PlayerInput ? (global::Packets.PlayerInputMessage) msg_ : null; }
       set {
         msg_ = value;
-        msgCase_ = value == null ? MsgOneofCase.None : MsgOneofCase.PlayerDirection;
+        msgCase_ = value == null ? MsgOneofCase.None : MsgOneofCase.PlayerInput;
       }
     }
 
@@ -2098,7 +2172,7 @@ namespace Packets {
       OK = 6,
       Deny = 7,
       Player = 8,
-      PlayerDirection = 9,
+      PlayerInput = 9,
     }
     private MsgOneofCase msgCase_ = MsgOneofCase.None;
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
@@ -2137,7 +2211,7 @@ namespace Packets {
       if (!object.Equals(OK, other.OK)) return false;
       if (!object.Equals(Deny, other.Deny)) return false;
       if (!object.Equals(Player, other.Player)) return false;
-      if (!object.Equals(PlayerDirection, other.PlayerDirection)) return false;
+      if (!object.Equals(PlayerInput, other.PlayerInput)) return false;
       if (MsgCase != other.MsgCase) return false;
       return Equals(_unknownFields, other._unknownFields);
     }
@@ -2154,7 +2228,7 @@ namespace Packets {
       if (msgCase_ == MsgOneofCase.OK) hash ^= OK.GetHashCode();
       if (msgCase_ == MsgOneofCase.Deny) hash ^= Deny.GetHashCode();
       if (msgCase_ == MsgOneofCase.Player) hash ^= Player.GetHashCode();
-      if (msgCase_ == MsgOneofCase.PlayerDirection) hash ^= PlayerDirection.GetHashCode();
+      if (msgCase_ == MsgOneofCase.PlayerInput) hash ^= PlayerInput.GetHashCode();
       hash ^= (int) msgCase_;
       if (_unknownFields != null) {
         hash ^= _unknownFields.GetHashCode();
@@ -2206,9 +2280,9 @@ namespace Packets {
         output.WriteRawTag(66);
         output.WriteMessage(Player);
       }
-      if (msgCase_ == MsgOneofCase.PlayerDirection) {
+      if (msgCase_ == MsgOneofCase.PlayerInput) {
         output.WriteRawTag(74);
-        output.WriteMessage(PlayerDirection);
+        output.WriteMessage(PlayerInput);
       }
       if (_unknownFields != null) {
         _unknownFields.WriteTo(output);
@@ -2252,9 +2326,9 @@ namespace Packets {
         output.WriteRawTag(66);
         output.WriteMessage(Player);
       }
-      if (msgCase_ == MsgOneofCase.PlayerDirection) {
+      if (msgCase_ == MsgOneofCase.PlayerInput) {
         output.WriteRawTag(74);
-        output.WriteMessage(PlayerDirection);
+        output.WriteMessage(PlayerInput);
       }
       if (_unknownFields != null) {
         _unknownFields.WriteTo(ref output);
@@ -2290,8 +2364,8 @@ namespace Packets {
       if (msgCase_ == MsgOneofCase.Player) {
         size += 1 + pb::CodedOutputStream.ComputeMessageSize(Player);
       }
-      if (msgCase_ == MsgOneofCase.PlayerDirection) {
-        size += 1 + pb::CodedOutputStream.ComputeMessageSize(PlayerDirection);
+      if (msgCase_ == MsgOneofCase.PlayerInput) {
+        size += 1 + pb::CodedOutputStream.ComputeMessageSize(PlayerInput);
       }
       if (_unknownFields != null) {
         size += _unknownFields.CalculateSize();
@@ -2351,11 +2425,11 @@ namespace Packets {
           }
           Player.MergeFrom(other.Player);
           break;
-        case MsgOneofCase.PlayerDirection:
-          if (PlayerDirection == null) {
-            PlayerDirection = new global::Packets.PlayerDirectionMessage();
+        case MsgOneofCase.PlayerInput:
+          if (PlayerInput == null) {
+            PlayerInput = new global::Packets.PlayerInputMessage();
           }
-          PlayerDirection.MergeFrom(other.PlayerDirection);
+          PlayerInput.MergeFrom(other.PlayerInput);
           break;
       }
 
@@ -2446,12 +2520,12 @@ namespace Packets {
             break;
           }
           case 74: {
-            global::Packets.PlayerDirectionMessage subBuilder = new global::Packets.PlayerDirectionMessage();
-            if (msgCase_ == MsgOneofCase.PlayerDirection) {
-              subBuilder.MergeFrom(PlayerDirection);
+            global::Packets.PlayerInputMessage subBuilder = new global::Packets.PlayerInputMessage();
+            if (msgCase_ == MsgOneofCase.PlayerInput) {
+              subBuilder.MergeFrom(PlayerInput);
             }
             input.ReadMessage(subBuilder);
-            PlayerDirection = subBuilder;
+            PlayerInput = subBuilder;
             break;
           }
         }
@@ -2541,12 +2615,12 @@ namespace Packets {
             break;
           }
           case 74: {
-            global::Packets.PlayerDirectionMessage subBuilder = new global::Packets.PlayerDirectionMessage();
-            if (msgCase_ == MsgOneofCase.PlayerDirection) {
-              subBuilder.MergeFrom(PlayerDirection);
+            global::Packets.PlayerInputMessage subBuilder = new global::Packets.PlayerInputMessage();
+            if (msgCase_ == MsgOneofCase.PlayerInput) {
+              subBuilder.MergeFrom(PlayerInput);
             }
             input.ReadMessage(subBuilder);
-            PlayerDirection = subBuilder;
+            PlayerInput = subBuilder;
             break;
           }
         }

@@ -8,7 +8,7 @@ public partial class InGame : Node
     [Export] private Log log;
     [Export] private LineEdit chatInput;
     [Export] private Node3D world;
-    private Dictionary<ulong, Actor> Players = new Dictionary<ulong, Actor>();
+    private Dictionary<ulong, Player> Players = new Dictionary<ulong, Player>();
 
     public override void _Ready()
     {
@@ -36,10 +36,19 @@ public partial class InGame : Node
 
     private void HandlePlayerMessge(ulong senderId, PlayerMessage packetPlayer)
     {
-        var pos = new Vector3((float)packetPlayer.X, (float)packetPlayer.Y, (float)packetPlayer.Z);
-        var (player, actor) = Player.instantiate(senderId, packetPlayer.Name, pos, (float)packetPlayer.Speed, senderId == globals.GM.clientId);
-        Players[senderId] = actor; // [ senderId -> actor]
-        world.AddChild(actor);
+        if (!Players.ContainsKey(senderId))
+        {
+            var pos = new Vector3((float)packetPlayer.X, (float)packetPlayer.Y, (float)packetPlayer.Z);
+            var (player, actor) = Player.instantiate(senderId, packetPlayer.Name, pos, (float)packetPlayer.Speed, senderId == globals.GM.clientId);
+            player.SetActor(actor);
+            Players[senderId] = player; // [ senderId -> actor]
+            world.AddChild(actor);
+        }
+        else
+        {
+            var player = Players[senderId];
+            player.Actor.Position = new Vector3((float)packetPlayer.X, (float)packetPlayer.Y, (float)packetPlayer.Z);
+        }
     }
 
     public void HandleChatMessage(ulong senderId, ChatMessage msg)
