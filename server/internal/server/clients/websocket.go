@@ -20,6 +20,27 @@ type WebSocketClient struct {
 	state    server.ClientStateHandler
 	logger   *log.Logger
 	dbTx     *server.DbTx
+	ENetConn *EnetClient
+}
+
+// SetWS this is the WS
+func (c *WebSocketClient) SetWS(WS server.ClientInterfacer) {
+
+}
+
+// WS Return yourself
+func (c *WebSocketClient) WS() server.ClientInterfacer {
+	return c
+}
+
+// SetEnet sets the ENET client
+func (c *WebSocketClient) SetEnet(Enet server.ClientInterfacer) {
+	c.ENetConn = Enet.(*EnetClient)
+}
+
+// Enet returns the ENET client
+func (c *WebSocketClient) Enet() server.ClientInterfacer {
+	return c.ENetConn
 }
 
 func (c *WebSocketClient) SetState(newState server.ClientStateHandler) {
@@ -78,7 +99,7 @@ func (c *WebSocketClient) ProcessMessage(senderId uint64, message packets.Msg) {
 func (c *WebSocketClient) Initialize(id uint64) {
 	c.id = id
 	c.logger.SetPrefix(fmt.Sprintf("Client %d: ", c.id))
-	c.SetState(&states.Connected{})
+	c.SetState(&states.EnetConnection{})
 }
 
 func (c *WebSocketClient) SocketSend(message packets.Msg) {
@@ -95,7 +116,7 @@ func (c *WebSocketClient) SocketSendAs(message packets.Msg, senderId uint64) {
 
 func (c *WebSocketClient) PassToPeer(message packets.Msg, peerId uint64) {
 	if peer, exists := c.hub.Clients.Get(peerId); exists {
-		peer.ProcessMessage(c.id, message)
+		peer.WS.ProcessMessage(c.id, message)
 	}
 }
 

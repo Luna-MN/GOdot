@@ -5,7 +5,7 @@ using Packets;
 public partial class Entered : Node, State
 {
     [Export] public Log log { get; set; }
-
+    public bool enetSet, idSet;
     public override void _Ready()
     {
         
@@ -20,7 +20,6 @@ public partial class Entered : Node, State
     public void OnWSConnectedToServer()
     {
         log.success("Connected to server.");
-        
     }
     public void OnWSConnectionClosed()
     {
@@ -39,9 +38,18 @@ public partial class Entered : Node, State
 
     public void HandleIdMessage(ulong senderId, IdMessage msg)
     {
+        log.info("Handling ID message. " + senderId);
+        log.info($"Received ID: {msg.Id}");
+        log.info("Setting client ID.");
         globals.GM.clientId = msg.Id;
-        log.info($"Client ID: {globals.GM.clientId}");
+        log.info($"Client ID: {globals.GM.clientId} sender ID: {senderId}");
+        idSet = true;
+        var e = new ENet();
+        GetTree().Root.AddChild(e);
+        globals.WS.Send(new Packet {SenderId = senderId, Id = new IdMessage {Id = globals.GM.clientId}});
+        log.info("Entering game state.");
         globals.GM.SetState(GameManager.state.Connected);
+
     }
     public void ExitTree()
     {

@@ -46,12 +46,29 @@ type ClientStateHandler interface {
 	// OnExit clean up the state machine
 	OnExit()
 }
+type Client struct {
+	ClientId uint64
+	ENet     ClientInterfacer
+	WS       ClientInterfacer
+}
+
+func NewClient(WS ClientInterfacer) Client {
+	return Client{
+		ClientId: 0,
+		ENet:     nil,
+		WS:       WS,
+	}
+}
 
 type ClientInterfacer interface {
 	// Initialize sets the client's Id and anything else to be initialized
 	Initialize(id uint64)
 	SetState(newState ClientStateHandler)
 	Id() uint64
+	Enet() ClientInterfacer
+	SetEnet(Enet ClientInterfacer)
+	WS() ClientInterfacer
+	SetWS(WS ClientInterfacer)
 	ProcessMessage(senderId uint64, msg packets.Msg)
 
 	// SocketSend Puts data from this client into the write pump
@@ -83,7 +100,9 @@ type ClientInterfacer interface {
 
 // Hub is the central point of communication for the server, managing connections and broadcasting messages to clients.
 type Hub struct {
-	Clients *objects.SharedCollection[ClientInterfacer]
+	Clients         *objects.SharedCollection[Client]
+	HomelessClients *objects.SharedCollection[ClientInterfacer]
+	//Clients *objects.SharedCollection[ClientInterfacer]
 
 	// Packets in this channel will be processed by all connected clients except the sender
 	BroadcastChan chan *packets.Packet
@@ -105,11 +124,12 @@ func NewHub() *Hub {
 		log.Fatal(err)
 	}
 	return &Hub{
-		Clients:        objects.NewSharedCollection[ClientInterfacer](),
-		BroadcastChan:  make(chan *packets.Packet),
-		RegisterChan:   make(chan ClientInterfacer),
-		UnregisterChan: make(chan ClientInterfacer),
-		dbPool:         dbPool,
+		Clients:         objects.NewSharedCollection[Client](),
+		HomelessClients: objects.NewSharedCollection[ClientInterfacer](),
+		BroadcastChan:   make(chan *packets.Packet),
+		RegisterChan:    make(chan ClientInterfacer),
+		UnregisterChan:  make(chan ClientInterfacer),
+		dbPool:          dbPool,
 		SharedGameObjects: &SharedGameObjects{
 			Players: objects.NewSharedCollection[*objects.Player](),
 		},
@@ -126,14 +146,21 @@ func (h *Hub) Run() {
 	for {
 		select {
 		case client := <-h.RegisterChan:
-			client.Initialize(h.Clients.Add(client))
+			var clients = NewClient(client)
+			var Id = h.Clients.Add(clients)
+			clients.ClientId = Id
+			client.Initialize(Id)
 		case client := <-h.UnregisterChan:
 			h.Clients.Remove(client.Id())
 		case packet := <-h.BroadcastChan:
 			//for id, client := range h.Clients {
-			h.Clients.ForEach(func(id uint64, client ClientInterfacer) {
+			h.Clients.ForEach(func(id uint64, client Client) {
 				if id != packet.SenderId {
-					client.ProcessMessage(packet.SenderId, packet.Msg)
+					client.WS.ProcessMessage(packet.SenderId, packet.Msg)
+					if client.ENet != nil {
+						client.ENet.ProcessMessage(packet.SenderId, packet.Msg)
+					}
+
 				}
 			})
 		}

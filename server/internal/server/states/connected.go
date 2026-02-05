@@ -33,10 +33,13 @@ func (c *Connected) SetClient(client server.ClientInterfacer) {
 }
 
 func (c *Connected) OnEnter() {
-	c.client.SocketSend(packets.NewId(c.client.Id()))
 }
 
 func (c *Connected) HandleMessage(senderId uint64, message packets.Msg) {
+	// don't accept traffic from enet
+	if c.client.Enet() == c.client {
+		return
+	}
 	switch message := message.(type) {
 	case *packets.Packet_LoginRequest:
 		c.HandleLoginRequest(senderId, message)
@@ -75,6 +78,16 @@ func (c *Connected) HandleLoginRequest(id uint64, message *packets.Packet_LoginR
 	c.logger.Printf("Login successful for user %s", username)
 	c.client.SocketSend(packets.NewOK())
 
+	// change state to in game
+	c.client.Enet().SetState(&inGame{
+		client: c.client,
+		player: &objects.Player{
+			Name: username,
+		},
+		logger:  c.logger,
+		queries: c.queries,
+		dbCtx:   c.dbCtx,
+	})
 	c.client.SetState(&inGame{
 		client: c.client,
 		player: &objects.Player{

@@ -25,10 +25,11 @@ public partial class websockets : Node
     {
         packet.SenderId = 0;
         var data = packet.ToByteArray();
+        GD.Print("packet Sent " + packet.MsgCase);
         return socket.Send(data);
     }
 
-    public Packet GetPacket()
+    private Packet GetPacket()
     {
         if (socket.GetAvailablePacketCount() < 1)
         {

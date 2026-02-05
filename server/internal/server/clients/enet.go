@@ -19,6 +19,23 @@ type EnetClient struct {
 	state    server.ClientStateHandler
 	logger   *log.Logger
 	dbTx     *server.DbTx
+	WSConn   *WebSocketClient
+}
+
+func (e EnetClient) SetWS(WS server.ClientInterfacer) {
+	e.WSConn = WS.(*WebSocketClient)
+}
+
+func (e EnetClient) SetEnet(Enet server.ClientInterfacer) {
+
+}
+
+func (e EnetClient) WS() server.ClientInterfacer {
+	return e.WSConn
+}
+
+func (e EnetClient) Enet() server.ClientInterfacer {
+	return e
 }
 
 func NewEnetClient(conn enet.Peer, hub *server.Hub) *EnetClient {
@@ -26,14 +43,14 @@ func NewEnetClient(conn enet.Peer, hub *server.Hub) *EnetClient {
 		conn:     conn,
 		hub:      hub,
 		sendChan: make(chan *packets.Packet, 256),
-		logger:   log.New(log.Writer(), "Client ", log.LstdFlags),
+		logger:   log.New(log.Writer(), "ENET Client ", log.LstdFlags),
 		dbTx:     hub.NewDbTx(),
 	}
 }
 
 func (e EnetClient) Initialize(id uint64) {
 	e.id = id
-	e.logger.SetPrefix(fmt.Sprintf("Client %d: ", e.id))
+	e.logger.SetPrefix(fmt.Sprintf("ENET Client %d: ", e.id))
 	e.SetState(&states.Connected{})
 }
 
@@ -63,6 +80,9 @@ func (e EnetClient) Id() uint64 {
 }
 
 func (e EnetClient) ProcessMessage(senderId uint64, msg packets.Msg) {
+	if e.state == nil {
+		return
+	}
 	e.state.HandleMessage(senderId, msg)
 }
 
@@ -80,7 +100,7 @@ func (e EnetClient) SocketSendAs(message packets.Msg, senderId uint64) {
 
 func (e EnetClient) PassToPeer(message packets.Msg, peerId uint64) {
 	if peer, exists := e.hub.Clients.Get(peerId); exists {
-		peer.ProcessMessage(e.id, message)
+		peer.ENet.ProcessMessage(e.id, message)
 	}
 }
 

@@ -25,7 +25,7 @@ project/assembly_name="TestClient"
 
 [editor_plugins]
 
-enabled=PackedStringArray("res://addons/protobuf/plugin.cfg")
+enabled=PackedStringArray()
 
 [input]
 
