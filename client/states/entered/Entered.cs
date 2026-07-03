@@ -14,7 +14,7 @@ public partial class Entered : Node, State
         globals.WS.packetRecived += OnPacketReceived;
 
         log.info("Connecting to server...");
-        globals.WS.connectToUrl("ws://localhost:8080/ws", null);
+        globals.WS.connectToUrl("wss://localhost:8080/ws", TlsOptions.ClientUnsafe());
     }
 
     public void OnWSConnectedToServer()
