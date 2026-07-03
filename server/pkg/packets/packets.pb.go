@@ -21,16 +21,133 @@ const (
 	_ = protoimpl.EnforceVersion(protoimpl.MaxVersion - 20)
 )
 
+type ChatType int32
+
+const (
+	ChatType_Nothing ChatType = 0
+	ChatType_Global  ChatType = 1
+	ChatType_Local   ChatType = 2
+	ChatType_Party   ChatType = 3
+	ChatType_Max     ChatType = 4
+)
+
+// Enum value maps for ChatType.
+var (
+	ChatType_name = map[int32]string{
+		0: "Nothing",
+		1: "Global",
+		2: "Local",
+		3: "Party",
+		4: "Max",
+	}
+	ChatType_value = map[string]int32{
+		"Nothing": 0,
+		"Global":  1,
+		"Local":   2,
+		"Party":   3,
+		"Max":     4,
+	}
+)
+
+func (x ChatType) Enum() *ChatType {
+	p := new(ChatType)
+	*p = x
+	return p
+}
+
+func (x ChatType) String() string {
+	return protoimpl.X.EnumStringOf(x.Descriptor(), protoreflect.EnumNumber(x))
+}
+
+func (ChatType) Descriptor() protoreflect.EnumDescriptor {
+	return file_packets_proto_enumTypes[0].Descriptor()
+}
+
+func (ChatType) Type() protoreflect.EnumType {
+	return &file_packets_proto_enumTypes[0]
+}
+
+func (x ChatType) Number() protoreflect.EnumNumber {
+	return protoreflect.EnumNumber(x)
+}
+
+// Deprecated: Use ChatType.Descriptor instead.
+func (ChatType) EnumDescriptor() ([]byte, []int) {
+	return file_packets_proto_rawDescGZIP(), []int{0}
+}
+
+type Vector3Msg struct {
+	state         protoimpl.MessageState `protogen:"open.v1"`
+	X             float32                `protobuf:"fixed32,1,opt,name=x,proto3" json:"x,omitempty"`
+	Y             float32                `protobuf:"fixed32,2,opt,name=y,proto3" json:"y,omitempty"`
+	Z             float32                `protobuf:"fixed32,3,opt,name=z,proto3" json:"z,omitempty"`
+	unknownFields protoimpl.UnknownFields
+	sizeCache     protoimpl.SizeCache
+}
+
+func (x *Vector3Msg) Reset() {
+	*x = Vector3Msg{}
+	mi := &file_packets_proto_msgTypes[0]
+	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+	ms.StoreMessageInfo(mi)
+}
+
+func (x *Vector3Msg) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*Vector3Msg) ProtoMessage() {}
+
+func (x *Vector3Msg) ProtoReflect() protoreflect.Message {
+	mi := &file_packets_proto_msgTypes[0]
+	if x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use Vector3Msg.ProtoReflect.Descriptor instead.
+func (*Vector3Msg) Descriptor() ([]byte, []int) {
+	return file_packets_proto_rawDescGZIP(), []int{0}
+}
+
+func (x *Vector3Msg) GetX() float32 {
+	if x != nil {
+		return x.X
+	}
+	return 0
+}
+
+func (x *Vector3Msg) GetY() float32 {
+	if x != nil {
+		return x.Y
+	}
+	return 0
+}
+
+func (x *Vector3Msg) GetZ() float32 {
+	if x != nil {
+		return x.Z
+	}
+	return 0
+}
+
 type ChatMessage struct {
 	state         protoimpl.MessageState `protogen:"open.v1"`
-	Msg           string                 `protobuf:"bytes,1,opt,name=msg,proto3" json:"msg,omitempty"`
+	Type          ChatType               `protobuf:"varint,1,opt,name=type,proto3,enum=packets.ChatType" json:"type,omitempty"`
+	Msg           string                 `protobuf:"bytes,2,opt,name=msg,proto3" json:"msg,omitempty"`
+	Username      string                 `protobuf:"bytes,3,opt,name=Username,proto3" json:"Username,omitempty"`
 	unknownFields protoimpl.UnknownFields
 	sizeCache     protoimpl.SizeCache
 }
 
 func (x *ChatMessage) Reset() {
 	*x = ChatMessage{}
-	mi := &file_packets_proto_msgTypes[0]
+	mi := &file_packets_proto_msgTypes[1]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -42,7 +159,7 @@ func (x *ChatMessage) String() string {
 func (*ChatMessage) ProtoMessage() {}
 
 func (x *ChatMessage) ProtoReflect() protoreflect.Message {
-	mi := &file_packets_proto_msgTypes[0]
+	mi := &file_packets_proto_msgTypes[1]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -55,12 +172,26 @@ func (x *ChatMessage) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use ChatMessage.ProtoReflect.Descriptor instead.
 func (*ChatMessage) Descriptor() ([]byte, []int) {
-	return file_packets_proto_rawDescGZIP(), []int{0}
+	return file_packets_proto_rawDescGZIP(), []int{1}
+}
+
+func (x *ChatMessage) GetType() ChatType {
+	if x != nil {
+		return x.Type
+	}
+	return ChatType_Nothing
 }
 
 func (x *ChatMessage) GetMsg() string {
 	if x != nil {
 		return x.Msg
+	}
+	return ""
+}
+
+func (x *ChatMessage) GetUsername() string {
+	if x != nil {
+		return x.Username
 	}
 	return ""
 }
@@ -74,7 +205,7 @@ type IdMessage struct {
 
 func (x *IdMessage) Reset() {
 	*x = IdMessage{}
-	mi := &file_packets_proto_msgTypes[1]
+	mi := &file_packets_proto_msgTypes[2]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -86,7 +217,7 @@ func (x *IdMessage) String() string {
 func (*IdMessage) ProtoMessage() {}
 
 func (x *IdMessage) ProtoReflect() protoreflect.Message {
-	mi := &file_packets_proto_msgTypes[1]
+	mi := &file_packets_proto_msgTypes[2]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -99,12 +230,72 @@ func (x *IdMessage) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use IdMessage.ProtoReflect.Descriptor instead.
 func (*IdMessage) Descriptor() ([]byte, []int) {
-	return file_packets_proto_rawDescGZIP(), []int{1}
+	return file_packets_proto_rawDescGZIP(), []int{2}
 }
 
 func (x *IdMessage) GetId() uint64 {
 	if x != nil {
 		return x.Id
+	}
+	return 0
+}
+
+type EnetAuthKeyMessage struct {
+	state         protoimpl.MessageState `protogen:"open.v1"`
+	Id            uint64                 `protobuf:"varint,1,opt,name=id,proto3" json:"id,omitempty"`
+	Key           []byte                 `protobuf:"bytes,2,opt,name=key,proto3" json:"key,omitempty"`
+	ExpiresAt     int64                  `protobuf:"varint,3,opt,name=expiresAt,proto3" json:"expiresAt,omitempty"`
+	unknownFields protoimpl.UnknownFields
+	sizeCache     protoimpl.SizeCache
+}
+
+func (x *EnetAuthKeyMessage) Reset() {
+	*x = EnetAuthKeyMessage{}
+	mi := &file_packets_proto_msgTypes[3]
+	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+	ms.StoreMessageInfo(mi)
+}
+
+func (x *EnetAuthKeyMessage) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*EnetAuthKeyMessage) ProtoMessage() {}
+
+func (x *EnetAuthKeyMessage) ProtoReflect() protoreflect.Message {
+	mi := &file_packets_proto_msgTypes[3]
+	if x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use EnetAuthKeyMessage.ProtoReflect.Descriptor instead.
+func (*EnetAuthKeyMessage) Descriptor() ([]byte, []int) {
+	return file_packets_proto_rawDescGZIP(), []int{3}
+}
+
+func (x *EnetAuthKeyMessage) GetId() uint64 {
+	if x != nil {
+		return x.Id
+	}
+	return 0
+}
+
+func (x *EnetAuthKeyMessage) GetKey() []byte {
+	if x != nil {
+		return x.Key
+	}
+	return nil
+}
+
+func (x *EnetAuthKeyMessage) GetExpiresAt() int64 {
+	if x != nil {
+		return x.ExpiresAt
 	}
 	return 0
 }
@@ -119,7 +310,7 @@ type LoginRequestMessage struct {
 
 func (x *LoginRequestMessage) Reset() {
 	*x = LoginRequestMessage{}
-	mi := &file_packets_proto_msgTypes[2]
+	mi := &file_packets_proto_msgTypes[4]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -131,7 +322,7 @@ func (x *LoginRequestMessage) String() string {
 func (*LoginRequestMessage) ProtoMessage() {}
 
 func (x *LoginRequestMessage) ProtoReflect() protoreflect.Message {
-	mi := &file_packets_proto_msgTypes[2]
+	mi := &file_packets_proto_msgTypes[4]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -144,7 +335,7 @@ func (x *LoginRequestMessage) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use LoginRequestMessage.ProtoReflect.Descriptor instead.
 func (*LoginRequestMessage) Descriptor() ([]byte, []int) {
-	return file_packets_proto_rawDescGZIP(), []int{2}
+	return file_packets_proto_rawDescGZIP(), []int{4}
 }
 
 func (x *LoginRequestMessage) GetUsername() string {
@@ -171,7 +362,7 @@ type RegisterRequestMessage struct {
 
 func (x *RegisterRequestMessage) Reset() {
 	*x = RegisterRequestMessage{}
-	mi := &file_packets_proto_msgTypes[3]
+	mi := &file_packets_proto_msgTypes[5]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -183,7 +374,7 @@ func (x *RegisterRequestMessage) String() string {
 func (*RegisterRequestMessage) ProtoMessage() {}
 
 func (x *RegisterRequestMessage) ProtoReflect() protoreflect.Message {
-	mi := &file_packets_proto_msgTypes[3]
+	mi := &file_packets_proto_msgTypes[5]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -196,7 +387,7 @@ func (x *RegisterRequestMessage) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use RegisterRequestMessage.ProtoReflect.Descriptor instead.
 func (*RegisterRequestMessage) Descriptor() ([]byte, []int) {
-	return file_packets_proto_rawDescGZIP(), []int{3}
+	return file_packets_proto_rawDescGZIP(), []int{5}
 }
 
 func (x *RegisterRequestMessage) GetUsername() string {
@@ -221,7 +412,7 @@ type OkResponseMessage struct {
 
 func (x *OkResponseMessage) Reset() {
 	*x = OkResponseMessage{}
-	mi := &file_packets_proto_msgTypes[4]
+	mi := &file_packets_proto_msgTypes[6]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -233,7 +424,7 @@ func (x *OkResponseMessage) String() string {
 func (*OkResponseMessage) ProtoMessage() {}
 
 func (x *OkResponseMessage) ProtoReflect() protoreflect.Message {
-	mi := &file_packets_proto_msgTypes[4]
+	mi := &file_packets_proto_msgTypes[6]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -246,7 +437,7 @@ func (x *OkResponseMessage) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use OkResponseMessage.ProtoReflect.Descriptor instead.
 func (*OkResponseMessage) Descriptor() ([]byte, []int) {
-	return file_packets_proto_rawDescGZIP(), []int{4}
+	return file_packets_proto_rawDescGZIP(), []int{6}
 }
 
 type DenyResponseMessage struct {
@@ -258,7 +449,7 @@ type DenyResponseMessage struct {
 
 func (x *DenyResponseMessage) Reset() {
 	*x = DenyResponseMessage{}
-	mi := &file_packets_proto_msgTypes[5]
+	mi := &file_packets_proto_msgTypes[7]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -270,7 +461,7 @@ func (x *DenyResponseMessage) String() string {
 func (*DenyResponseMessage) ProtoMessage() {}
 
 func (x *DenyResponseMessage) ProtoReflect() protoreflect.Message {
-	mi := &file_packets_proto_msgTypes[5]
+	mi := &file_packets_proto_msgTypes[7]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -283,7 +474,7 @@ func (x *DenyResponseMessage) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use DenyResponseMessage.ProtoReflect.Descriptor instead.
 func (*DenyResponseMessage) Descriptor() ([]byte, []int) {
-	return file_packets_proto_rawDescGZIP(), []int{5}
+	return file_packets_proto_rawDescGZIP(), []int{7}
 }
 
 func (x *DenyResponseMessage) GetReason() string {
@@ -295,20 +486,21 @@ func (x *DenyResponseMessage) GetReason() string {
 
 type PlayerMessage struct {
 	state         protoimpl.MessageState `protogen:"open.v1"`
-	Id            uint64                 `protobuf:"varint,1,opt,name=id,proto3" json:"id,omitempty"`
-	Name          string                 `protobuf:"bytes,2,opt,name=name,proto3" json:"name,omitempty"`
-	X             float32                `protobuf:"fixed32,3,opt,name=x,proto3" json:"x,omitempty"`
-	Y             float32                `protobuf:"fixed32,4,opt,name=y,proto3" json:"y,omitempty"`
-	Z             float32                `protobuf:"fixed32,5,opt,name=z,proto3" json:"z,omitempty"`
+	ClientId      uint64                 `protobuf:"varint,1,opt,name=clientId,proto3" json:"clientId,omitempty"`
+	CharacterId   uint64                 `protobuf:"varint,2,opt,name=characterId,proto3" json:"characterId,omitempty"`
+	Name          string                 `protobuf:"bytes,3,opt,name=name,proto3" json:"name,omitempty"`
+	Level         uint32                 `protobuf:"varint,4,opt,name=level,proto3" json:"level,omitempty"`
+	Position      *Vector3Msg            `protobuf:"bytes,5,opt,name=position,proto3" json:"position,omitempty"`
 	Direction     float32                `protobuf:"fixed32,6,opt,name=direction,proto3" json:"direction,omitempty"`
 	Speed         float32                `protobuf:"fixed32,7,opt,name=speed,proto3" json:"speed,omitempty"`
+	Rotation      *Vector3Msg            `protobuf:"bytes,8,opt,name=rotation,proto3" json:"rotation,omitempty"`
 	unknownFields protoimpl.UnknownFields
 	sizeCache     protoimpl.SizeCache
 }
 
 func (x *PlayerMessage) Reset() {
 	*x = PlayerMessage{}
-	mi := &file_packets_proto_msgTypes[6]
+	mi := &file_packets_proto_msgTypes[8]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -320,7 +512,7 @@ func (x *PlayerMessage) String() string {
 func (*PlayerMessage) ProtoMessage() {}
 
 func (x *PlayerMessage) ProtoReflect() protoreflect.Message {
-	mi := &file_packets_proto_msgTypes[6]
+	mi := &file_packets_proto_msgTypes[8]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -333,12 +525,19 @@ func (x *PlayerMessage) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use PlayerMessage.ProtoReflect.Descriptor instead.
 func (*PlayerMessage) Descriptor() ([]byte, []int) {
-	return file_packets_proto_rawDescGZIP(), []int{6}
+	return file_packets_proto_rawDescGZIP(), []int{8}
 }
 
-func (x *PlayerMessage) GetId() uint64 {
+func (x *PlayerMessage) GetClientId() uint64 {
 	if x != nil {
-		return x.Id
+		return x.ClientId
+	}
+	return 0
+}
+
+func (x *PlayerMessage) GetCharacterId() uint64 {
+	if x != nil {
+		return x.CharacterId
 	}
 	return 0
 }
@@ -350,25 +549,18 @@ func (x *PlayerMessage) GetName() string {
 	return ""
 }
 
-func (x *PlayerMessage) GetX() float32 {
+func (x *PlayerMessage) GetLevel() uint32 {
 	if x != nil {
-		return x.X
+		return x.Level
 	}
 	return 0
 }
 
-func (x *PlayerMessage) GetY() float32 {
+func (x *PlayerMessage) GetPosition() *Vector3Msg {
 	if x != nil {
-		return x.Y
+		return x.Position
 	}
-	return 0
-}
-
-func (x *PlayerMessage) GetZ() float32 {
-	if x != nil {
-		return x.Z
-	}
-	return 0
+	return nil
 }
 
 func (x *PlayerMessage) GetDirection() float32 {
@@ -385,18 +577,24 @@ func (x *PlayerMessage) GetSpeed() float32 {
 	return 0
 }
 
+func (x *PlayerMessage) GetRotation() *Vector3Msg {
+	if x != nil {
+		return x.Rotation
+	}
+	return nil
+}
+
 type PlayerInputMessage struct {
 	state         protoimpl.MessageState `protogen:"open.v1"`
-	X             float32                `protobuf:"fixed32,1,opt,name=x,proto3" json:"x,omitempty"`
-	Y             float32                `protobuf:"fixed32,2,opt,name=y,proto3" json:"y,omitempty"`
-	Z             float32                `protobuf:"fixed32,3,opt,name=z,proto3" json:"z,omitempty"`
+	Position      *Vector3Msg            `protobuf:"bytes,1,opt,name=position,proto3" json:"position,omitempty"`
+	Rotation      *Vector3Msg            `protobuf:"bytes,2,opt,name=rotation,proto3" json:"rotation,omitempty"`
 	unknownFields protoimpl.UnknownFields
 	sizeCache     protoimpl.SizeCache
 }
 
 func (x *PlayerInputMessage) Reset() {
 	*x = PlayerInputMessage{}
-	mi := &file_packets_proto_msgTypes[7]
+	mi := &file_packets_proto_msgTypes[9]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -408,7 +606,7 @@ func (x *PlayerInputMessage) String() string {
 func (*PlayerInputMessage) ProtoMessage() {}
 
 func (x *PlayerInputMessage) ProtoReflect() protoreflect.Message {
-	mi := &file_packets_proto_msgTypes[7]
+	mi := &file_packets_proto_msgTypes[9]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -421,28 +619,117 @@ func (x *PlayerInputMessage) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use PlayerInputMessage.ProtoReflect.Descriptor instead.
 func (*PlayerInputMessage) Descriptor() ([]byte, []int) {
-	return file_packets_proto_rawDescGZIP(), []int{7}
+	return file_packets_proto_rawDescGZIP(), []int{9}
 }
 
-func (x *PlayerInputMessage) GetX() float32 {
+func (x *PlayerInputMessage) GetPosition() *Vector3Msg {
 	if x != nil {
-		return x.X
+		return x.Position
 	}
-	return 0
+	return nil
 }
 
-func (x *PlayerInputMessage) GetY() float32 {
+func (x *PlayerInputMessage) GetRotation() *Vector3Msg {
 	if x != nil {
-		return x.Y
+		return x.Rotation
 	}
-	return 0
+	return nil
 }
 
-func (x *PlayerInputMessage) GetZ() float32 {
+type UsersCharacterMessage struct {
+	state         protoimpl.MessageState `protogen:"open.v1"`
+	Players       []*PlayerMessage       `protobuf:"bytes,1,rep,name=players,proto3" json:"players,omitempty"`
+	unknownFields protoimpl.UnknownFields
+	sizeCache     protoimpl.SizeCache
+}
+
+func (x *UsersCharacterMessage) Reset() {
+	*x = UsersCharacterMessage{}
+	mi := &file_packets_proto_msgTypes[10]
+	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+	ms.StoreMessageInfo(mi)
+}
+
+func (x *UsersCharacterMessage) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*UsersCharacterMessage) ProtoMessage() {}
+
+func (x *UsersCharacterMessage) ProtoReflect() protoreflect.Message {
+	mi := &file_packets_proto_msgTypes[10]
 	if x != nil {
-		return x.Z
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
 	}
-	return 0
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use UsersCharacterMessage.ProtoReflect.Descriptor instead.
+func (*UsersCharacterMessage) Descriptor() ([]byte, []int) {
+	return file_packets_proto_rawDescGZIP(), []int{10}
+}
+
+func (x *UsersCharacterMessage) GetPlayers() []*PlayerMessage {
+	if x != nil {
+		return x.Players
+	}
+	return nil
+}
+
+type CommandMessage struct {
+	state         protoimpl.MessageState `protogen:"open.v1"`
+	Command       string                 `protobuf:"bytes,1,opt,name=command,proto3" json:"command,omitempty"`
+	Args          []string               `protobuf:"bytes,2,rep,name=args,proto3" json:"args,omitempty"`
+	unknownFields protoimpl.UnknownFields
+	sizeCache     protoimpl.SizeCache
+}
+
+func (x *CommandMessage) Reset() {
+	*x = CommandMessage{}
+	mi := &file_packets_proto_msgTypes[11]
+	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+	ms.StoreMessageInfo(mi)
+}
+
+func (x *CommandMessage) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*CommandMessage) ProtoMessage() {}
+
+func (x *CommandMessage) ProtoReflect() protoreflect.Message {
+	mi := &file_packets_proto_msgTypes[11]
+	if x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use CommandMessage.ProtoReflect.Descriptor instead.
+func (*CommandMessage) Descriptor() ([]byte, []int) {
+	return file_packets_proto_rawDescGZIP(), []int{11}
+}
+
+func (x *CommandMessage) GetCommand() string {
+	if x != nil {
+		return x.Command
+	}
+	return ""
+}
+
+func (x *CommandMessage) GetArgs() []string {
+	if x != nil {
+		return x.Args
+	}
+	return nil
 }
 
 type Packet struct {
@@ -458,6 +745,9 @@ type Packet struct {
 	//	*Packet_Deny
 	//	*Packet_Player
 	//	*Packet_PlayerInput
+	//	*Packet_Key
+	//	*Packet_Characters
+	//	*Packet_Command
 	Msg           isPacket_Msg `protobuf_oneof:"msg"`
 	unknownFields protoimpl.UnknownFields
 	sizeCache     protoimpl.SizeCache
@@ -465,7 +755,7 @@ type Packet struct {
 
 func (x *Packet) Reset() {
 	*x = Packet{}
-	mi := &file_packets_proto_msgTypes[8]
+	mi := &file_packets_proto_msgTypes[12]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -477,7 +767,7 @@ func (x *Packet) String() string {
 func (*Packet) ProtoMessage() {}
 
 func (x *Packet) ProtoReflect() protoreflect.Message {
-	mi := &file_packets_proto_msgTypes[8]
+	mi := &file_packets_proto_msgTypes[12]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -490,7 +780,7 @@ func (x *Packet) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use Packet.ProtoReflect.Descriptor instead.
 func (*Packet) Descriptor() ([]byte, []int) {
-	return file_packets_proto_rawDescGZIP(), []int{8}
+	return file_packets_proto_rawDescGZIP(), []int{12}
 }
 
 func (x *Packet) GetSenderId() uint64 {
@@ -579,6 +869,33 @@ func (x *Packet) GetPlayerInput() *PlayerInputMessage {
 	return nil
 }
 
+func (x *Packet) GetKey() *EnetAuthKeyMessage {
+	if x != nil {
+		if x, ok := x.Msg.(*Packet_Key); ok {
+			return x.Key
+		}
+	}
+	return nil
+}
+
+func (x *Packet) GetCharacters() *UsersCharacterMessage {
+	if x != nil {
+		if x, ok := x.Msg.(*Packet_Characters); ok {
+			return x.Characters
+		}
+	}
+	return nil
+}
+
+func (x *Packet) GetCommand() *CommandMessage {
+	if x != nil {
+		if x, ok := x.Msg.(*Packet_Command); ok {
+			return x.Command
+		}
+	}
+	return nil
+}
+
 type isPacket_Msg interface {
 	isPacket_Msg()
 }
@@ -612,7 +929,19 @@ type Packet_Player struct {
 }
 
 type Packet_PlayerInput struct {
-	PlayerInput *PlayerInputMessage `protobuf:"bytes,9,opt,name=player_input,json=playerInput,proto3,oneof"` //...
+	PlayerInput *PlayerInputMessage `protobuf:"bytes,9,opt,name=player_input,json=playerInput,proto3,oneof"`
+}
+
+type Packet_Key struct {
+	Key *EnetAuthKeyMessage `protobuf:"bytes,10,opt,name=key,proto3,oneof"`
+}
+
+type Packet_Characters struct {
+	Characters *UsersCharacterMessage `protobuf:"bytes,11,opt,name=characters,proto3,oneof"`
+}
+
+type Packet_Command struct {
+	Command *CommandMessage `protobuf:"bytes,12,opt,name=command,proto3,oneof"` //...
 }
 
 func (*Packet_Chat) isPacket_Msg() {}
@@ -631,15 +960,32 @@ func (*Packet_Player) isPacket_Msg() {}
 
 func (*Packet_PlayerInput) isPacket_Msg() {}
 
+func (*Packet_Key) isPacket_Msg() {}
+
+func (*Packet_Characters) isPacket_Msg() {}
+
+func (*Packet_Command) isPacket_Msg() {}
+
 var File_packets_proto protoreflect.FileDescriptor
 
 const file_packets_proto_rawDesc = "" +
 	"\n" +
-	"\rpackets.proto\x12\apackets\"\x1f\n" +
-	"\vChatMessage\x12\x10\n" +
-	"\x03msg\x18\x01 \x01(\tR\x03msg\"\x1b\n" +
+	"\rpackets.proto\x12\apackets\"6\n" +
+	"\n" +
+	"Vector3Msg\x12\f\n" +
+	"\x01x\x18\x01 \x01(\x02R\x01x\x12\f\n" +
+	"\x01y\x18\x02 \x01(\x02R\x01y\x12\f\n" +
+	"\x01z\x18\x03 \x01(\x02R\x01z\"b\n" +
+	"\vChatMessage\x12%\n" +
+	"\x04type\x18\x01 \x01(\x0e2\x11.packets.ChatTypeR\x04type\x12\x10\n" +
+	"\x03msg\x18\x02 \x01(\tR\x03msg\x12\x1a\n" +
+	"\bUsername\x18\x03 \x01(\tR\bUsername\"\x1b\n" +
 	"\tIdMessage\x12\x0e\n" +
-	"\x02id\x18\x01 \x01(\x04R\x02id\"M\n" +
+	"\x02id\x18\x01 \x01(\x04R\x02id\"T\n" +
+	"\x12enetAuthKeyMessage\x12\x0e\n" +
+	"\x02id\x18\x01 \x01(\x04R\x02id\x12\x10\n" +
+	"\x03key\x18\x02 \x01(\fR\x03key\x12\x1c\n" +
+	"\texpiresAt\x18\x03 \x01(\x03R\texpiresAt\"M\n" +
 	"\x13LoginRequestMessage\x12\x1a\n" +
 	"\busername\x18\x01 \x01(\tR\busername\x12\x1a\n" +
 	"\bpassword\x18\x02 \x01(\tR\bpassword\"P\n" +
@@ -648,19 +994,24 @@ const file_packets_proto_rawDesc = "" +
 	"\bpassword\x18\x02 \x01(\tR\bpassword\"\x13\n" +
 	"\x11OkResponseMessage\"-\n" +
 	"\x13DenyResponseMessage\x12\x16\n" +
-	"\x06reason\x18\x01 \x01(\tR\x06reason\"\x91\x01\n" +
-	"\rPlayerMessage\x12\x0e\n" +
-	"\x02id\x18\x01 \x01(\x04R\x02id\x12\x12\n" +
-	"\x04name\x18\x02 \x01(\tR\x04name\x12\f\n" +
-	"\x01x\x18\x03 \x01(\x02R\x01x\x12\f\n" +
-	"\x01y\x18\x04 \x01(\x02R\x01y\x12\f\n" +
-	"\x01z\x18\x05 \x01(\x02R\x01z\x12\x1c\n" +
+	"\x06reason\x18\x01 \x01(\tR\x06reason\"\x8d\x02\n" +
+	"\rPlayerMessage\x12\x1a\n" +
+	"\bclientId\x18\x01 \x01(\x04R\bclientId\x12 \n" +
+	"\vcharacterId\x18\x02 \x01(\x04R\vcharacterId\x12\x12\n" +
+	"\x04name\x18\x03 \x01(\tR\x04name\x12\x14\n" +
+	"\x05level\x18\x04 \x01(\rR\x05level\x12/\n" +
+	"\bposition\x18\x05 \x01(\v2\x13.packets.Vector3MsgR\bposition\x12\x1c\n" +
 	"\tdirection\x18\x06 \x01(\x02R\tdirection\x12\x14\n" +
-	"\x05speed\x18\a \x01(\x02R\x05speed\">\n" +
-	"\x12PlayerInputMessage\x12\f\n" +
-	"\x01x\x18\x01 \x01(\x02R\x01x\x12\f\n" +
-	"\x01y\x18\x02 \x01(\x02R\x01y\x12\f\n" +
-	"\x01z\x18\x03 \x01(\x02R\x01z\"\xe5\x03\n" +
+	"\x05speed\x18\a \x01(\x02R\x05speed\x12/\n" +
+	"\brotation\x18\b \x01(\v2\x13.packets.Vector3MsgR\brotation\"v\n" +
+	"\x12PlayerInputMessage\x12/\n" +
+	"\bposition\x18\x01 \x01(\v2\x13.packets.Vector3MsgR\bposition\x12/\n" +
+	"\brotation\x18\x02 \x01(\v2\x13.packets.Vector3MsgR\brotation\"I\n" +
+	"\x15UsersCharacterMessage\x120\n" +
+	"\aplayers\x18\x01 \x03(\v2\x16.packets.PlayerMessageR\aplayers\">\n" +
+	"\x0eCommandMessage\x12\x18\n" +
+	"\acommand\x18\x01 \x01(\tR\acommand\x12\x12\n" +
+	"\x04args\x18\x02 \x03(\tR\x04args\"\x8d\x05\n" +
 	"\x06Packet\x12\x1b\n" +
 	"\tsender_id\x18\x01 \x01(\x04R\bsenderId\x12*\n" +
 	"\x04chat\x18\x02 \x01(\v2\x14.packets.ChatMessageH\x00R\x04chat\x12$\n" +
@@ -670,8 +1021,21 @@ const file_packets_proto_rawDesc = "" +
 	"\x02OK\x18\x06 \x01(\v2\x1a.packets.OkResponseMessageH\x00R\x02OK\x122\n" +
 	"\x04Deny\x18\a \x01(\v2\x1c.packets.DenyResponseMessageH\x00R\x04Deny\x120\n" +
 	"\x06Player\x18\b \x01(\v2\x16.packets.PlayerMessageH\x00R\x06Player\x12@\n" +
-	"\fplayer_input\x18\t \x01(\v2\x1b.packets.PlayerInputMessageH\x00R\vplayerInputB\x05\n" +
-	"\x03msgB\rZ\vpkg/packetsb\x06proto3"
+	"\fplayer_input\x18\t \x01(\v2\x1b.packets.PlayerInputMessageH\x00R\vplayerInput\x12/\n" +
+	"\x03key\x18\n" +
+	" \x01(\v2\x1b.packets.enetAuthKeyMessageH\x00R\x03key\x12@\n" +
+	"\n" +
+	"characters\x18\v \x01(\v2\x1e.packets.UsersCharacterMessageH\x00R\n" +
+	"characters\x123\n" +
+	"\acommand\x18\f \x01(\v2\x17.packets.CommandMessageH\x00R\acommandB\x05\n" +
+	"\x03msg*B\n" +
+	"\bChatType\x12\v\n" +
+	"\aNothing\x10\x00\x12\n" +
+	"\n" +
+	"\x06Global\x10\x01\x12\t\n" +
+	"\x05Local\x10\x02\x12\t\n" +
+	"\x05Party\x10\x03\x12\a\n" +
+	"\x03Max\x10\x04B\rZ\vpkg/packetsb\x06proto3"
 
 var (
 	file_packets_proto_rawDescOnce sync.Once
@@ -685,32 +1049,47 @@ func file_packets_proto_rawDescGZIP() []byte {
 	return file_packets_proto_rawDescData
 }
 
-var file_packets_proto_msgTypes = make([]protoimpl.MessageInfo, 9)
+var file_packets_proto_enumTypes = make([]protoimpl.EnumInfo, 1)
+var file_packets_proto_msgTypes = make([]protoimpl.MessageInfo, 13)
 var file_packets_proto_goTypes = []any{
-	(*ChatMessage)(nil),            // 0: packets.ChatMessage
-	(*IdMessage)(nil),              // 1: packets.IdMessage
-	(*LoginRequestMessage)(nil),    // 2: packets.LoginRequestMessage
-	(*RegisterRequestMessage)(nil), // 3: packets.RegisterRequestMessage
-	(*OkResponseMessage)(nil),      // 4: packets.OkResponseMessage
-	(*DenyResponseMessage)(nil),    // 5: packets.DenyResponseMessage
-	(*PlayerMessage)(nil),          // 6: packets.PlayerMessage
-	(*PlayerInputMessage)(nil),     // 7: packets.PlayerInputMessage
-	(*Packet)(nil),                 // 8: packets.Packet
+	(ChatType)(0),                  // 0: packets.ChatType
+	(*Vector3Msg)(nil),             // 1: packets.Vector3Msg
+	(*ChatMessage)(nil),            // 2: packets.ChatMessage
+	(*IdMessage)(nil),              // 3: packets.IdMessage
+	(*EnetAuthKeyMessage)(nil),     // 4: packets.enetAuthKeyMessage
+	(*LoginRequestMessage)(nil),    // 5: packets.LoginRequestMessage
+	(*RegisterRequestMessage)(nil), // 6: packets.RegisterRequestMessage
+	(*OkResponseMessage)(nil),      // 7: packets.OkResponseMessage
+	(*DenyResponseMessage)(nil),    // 8: packets.DenyResponseMessage
+	(*PlayerMessage)(nil),          // 9: packets.PlayerMessage
+	(*PlayerInputMessage)(nil),     // 10: packets.PlayerInputMessage
+	(*UsersCharacterMessage)(nil),  // 11: packets.UsersCharacterMessage
+	(*CommandMessage)(nil),         // 12: packets.CommandMessage
+	(*Packet)(nil),                 // 13: packets.Packet
 }
 var file_packets_proto_depIdxs = []int32{
-	0, // 0: packets.Packet.chat:type_name -> packets.ChatMessage
-	1, // 1: packets.Packet.id:type_name -> packets.IdMessage
-	2, // 2: packets.Packet.loginRequest:type_name -> packets.LoginRequestMessage
-	3, // 3: packets.Packet.registerRequest:type_name -> packets.RegisterRequestMessage
-	4, // 4: packets.Packet.OK:type_name -> packets.OkResponseMessage
-	5, // 5: packets.Packet.Deny:type_name -> packets.DenyResponseMessage
-	6, // 6: packets.Packet.Player:type_name -> packets.PlayerMessage
-	7, // 7: packets.Packet.player_input:type_name -> packets.PlayerInputMessage
-	8, // [8:8] is the sub-list for method output_type
-	8, // [8:8] is the sub-list for method input_type
-	8, // [8:8] is the sub-list for extension type_name
-	8, // [8:8] is the sub-list for extension extendee
-	0, // [0:8] is the sub-list for field type_name
+	0,  // 0: packets.ChatMessage.type:type_name -> packets.ChatType
+	1,  // 1: packets.PlayerMessage.position:type_name -> packets.Vector3Msg
+	1,  // 2: packets.PlayerMessage.rotation:type_name -> packets.Vector3Msg
+	1,  // 3: packets.PlayerInputMessage.position:type_name -> packets.Vector3Msg
+	1,  // 4: packets.PlayerInputMessage.rotation:type_name -> packets.Vector3Msg
+	9,  // 5: packets.UsersCharacterMessage.players:type_name -> packets.PlayerMessage
+	2,  // 6: packets.Packet.chat:type_name -> packets.ChatMessage
+	3,  // 7: packets.Packet.id:type_name -> packets.IdMessage
+	5,  // 8: packets.Packet.loginRequest:type_name -> packets.LoginRequestMessage
+	6,  // 9: packets.Packet.registerRequest:type_name -> packets.RegisterRequestMessage
+	7,  // 10: packets.Packet.OK:type_name -> packets.OkResponseMessage
+	8,  // 11: packets.Packet.Deny:type_name -> packets.DenyResponseMessage
+	9,  // 12: packets.Packet.Player:type_name -> packets.PlayerMessage
+	10, // 13: packets.Packet.player_input:type_name -> packets.PlayerInputMessage
+	4,  // 14: packets.Packet.key:type_name -> packets.enetAuthKeyMessage
+	11, // 15: packets.Packet.characters:type_name -> packets.UsersCharacterMessage
+	12, // 16: packets.Packet.command:type_name -> packets.CommandMessage
+	17, // [17:17] is the sub-list for method output_type
+	17, // [17:17] is the sub-list for method input_type
+	17, // [17:17] is the sub-list for extension type_name
+	17, // [17:17] is the sub-list for extension extendee
+	0,  // [0:17] is the sub-list for field type_name
 }
 
 func init() { file_packets_proto_init() }
@@ -718,7 +1097,7 @@ func file_packets_proto_init() {
 	if File_packets_proto != nil {
 		return
 	}
-	file_packets_proto_msgTypes[8].OneofWrappers = []any{
+	file_packets_proto_msgTypes[12].OneofWrappers = []any{
 		(*Packet_Chat)(nil),
 		(*Packet_Id)(nil),
 		(*Packet_LoginRequest)(nil),
@@ -727,19 +1106,23 @@ func file_packets_proto_init() {
 		(*Packet_Deny)(nil),
 		(*Packet_Player)(nil),
 		(*Packet_PlayerInput)(nil),
+		(*Packet_Key)(nil),
+		(*Packet_Characters)(nil),
+		(*Packet_Command)(nil),
 	}
 	type x struct{}
 	out := protoimpl.TypeBuilder{
 		File: protoimpl.DescBuilder{
 			GoPackagePath: reflect.TypeOf(x{}).PkgPath(),
 			RawDescriptor: unsafe.Slice(unsafe.StringData(file_packets_proto_rawDesc), len(file_packets_proto_rawDesc)),
-			NumEnums:      0,
-			NumMessages:   9,
+			NumEnums:      1,
+			NumMessages:   13,
 			NumExtensions: 0,
 			NumServices:   0,
 		},
 		GoTypes:           file_packets_proto_goTypes,
 		DependencyIndexes: file_packets_proto_depIdxs,
+		EnumInfos:         file_packets_proto_enumTypes,
 		MessageInfos:      file_packets_proto_msgTypes,
 	}.Build()
 	File_packets_proto = out.File

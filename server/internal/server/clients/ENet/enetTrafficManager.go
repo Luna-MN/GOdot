@@ -3,10 +3,10 @@ package ENet
 import (
 	"fmt"
 	"log"
+	"server/internal"
 	"server/internal/server"
 	"server/internal/server/clients"
 	"server/pkg/packets"
-	"strconv"
 
 	"github.com/codecat/go-enet"
 	"google.golang.org/protobuf/proto"
@@ -14,7 +14,7 @@ import (
 
 func InitEnet(h *server.Hub) {
 	enet.Initialize()
-	host, err := enet.NewHost(enet.NewAddress("127.0.0.1", 8081), 4000, 3, 0, 0)
+	host, err := enet.NewHost(enet.NewAddress("127.0.0.1", internal.ENetPort), internal.EnetMaxClients, internal.ENetChannels, 0, 0)
 	if err != nil {
 		log.Fatalf("Failed to initialize enet: %v", err.Error())
 		return
@@ -25,8 +25,6 @@ func InitEnet(h *server.Hub) {
 }
 func Serve(getNewClient func(conn enet.Peer, h *server.Hub) *clients.EnetClient, conn enet.Peer, h *server.Hub) *clients.EnetClient {
 	client := getNewClient(conn, h)
-
-	h.RegisterChan <- client
 
 	go client.WritePump()
 
@@ -43,28 +41,58 @@ func TrafficHandler(host enet.Host, h *server.Hub) {
 		if ev.GetType() == enet.EventNone {
 			continue
 		}
-		fmt.Println(ev.GetType())
 		switch ev.GetType() {
 		case enet.EventConnect:
-			fmt.Println("New Enet connection " + strconv.Itoa(int(ev.GetData())))
 			c := Serve(clients.NewEnetClient, ev.GetPeer(), h)
+			c.Initialize(uint64(ev.GetData()))
 			cs, _ := h.Clients.Get(uint64(ev.GetData()))
 			cs.ENet = c
-			cs.WS.SetEnet(c)
-			c.Initialize(uint64(int(ev.GetData())))
+			c.SetClient(cs)
+
+			h.PeerToClient[ev.GetPeer().GetConnectId()] = c.Client()
 		case enet.EventDisconnect:
-			client, _ := h.Clients.Get(uint64(ev.GetPeer().GetConnectId()))
-			h.UnregisterChan <- client.ENet
+			id := ev.GetData()
+			client, _ := h.Clients.Get(uint64(id))
+			if client != nil {
+				h.UnregisterChan <- client.ENet
+			}
 		case enet.EventReceive:
-			client, _ := h.Clients.Get(uint64(ev.GetPeer().GetConnectId()))
+			raw := ev.GetPacket().GetData()
+
+			if len(raw) < 12+16 { // nonce + tag minimum
+				log.Printf("Packet too short")
+				continue
+			}
+
+			client, _ := h.PeerToClient[ev.GetPeer().GetConnectId()]
+			if client == nil {
+				log.Printf("Unknown client")
+				continue
+			}
+
+			// split the packet
+			nonce := raw[:12]
+			ciphertext := raw[12 : len(raw)-16]
+			tag := raw[len(raw)-16:]
+
+			// decrypt: append tag to ciphertext because chacha20poly1305.Open expects it
+			encData := append(ciphertext, tag...)
+
+			plaintext, err := client.Cyph.Open(nil, nonce, encData, nil)
+			if err != nil {
+				log.Printf("Failed to decrypt packet from client %d: %v", client.Id(), err)
+				continue
+			}
+
+			// unmarshal the protobuf from decrypted payload
 			packet := &packets.Packet{}
-			err := proto.Unmarshal(ev.GetPacket().GetData(), packet)
+			err = proto.Unmarshal(plaintext, packet)
 			if err != nil {
 				log.Printf("Failed to unmarshal packet: %v", err)
 				continue
 			}
 
-			client.ENet.ProcessMessage(packet.SenderId, packet.Msg)
+			go client.ENet.ProcessMessage(packet.SenderId, packet.Msg, int(ev.GetChannelID()))
 		default:
 			panic("unhandled default case")
 		}

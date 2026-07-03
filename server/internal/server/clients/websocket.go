@@ -17,51 +17,26 @@ type WebSocketClient struct {
 	conn     *websocket.Conn
 	hub      *server.Hub
 	sendChan chan *packets.Packet
-	state    server.ClientStateHandler
 	logger   *log.Logger
 	dbTx     *server.DbTx
-	ENetConn *EnetClient
+	ENetConn *server.ClientInterfacer
+	client   *server.Client
 }
 
-// SetWS this is the WS
-func (c *WebSocketClient) SetWS(WS server.ClientInterfacer) {
-
+func (c *WebSocketClient) Client() *server.Client {
+	return c.client
 }
 
-// WS Return yourself
-func (c *WebSocketClient) WS() server.ClientInterfacer {
-	return c
+func (c *WebSocketClient) SetClient(client *server.Client) {
+	c.client = client
 }
 
-// SetEnet sets the ENET client
-func (c *WebSocketClient) SetEnet(Enet server.ClientInterfacer) {
-	c.ENetConn = Enet.(*EnetClient)
+func (c *WebSocketClient) IsEnet() bool {
+	return false
 }
 
-// Enet returns the ENET client
-func (c *WebSocketClient) Enet() server.ClientInterfacer {
-	return c.ENetConn
-}
-
-func (c *WebSocketClient) SetState(newState server.ClientStateHandler) {
-	previousStateName := "None"
-	if c.state != nil {
-		previousStateName = c.state.Name()
-		c.state.OnExit()
-	}
-
-	newStateName := "None"
-	if newState != nil {
-		newStateName = newState.Name()
-	}
-
-	c.logger.Printf("Changing state from %s to %s", previousStateName, newStateName)
-	c.state = newState
-
-	if c.state != nil {
-		c.state.SetClient(c)
-		c.state.OnEnter()
-	}
+func (c *WebSocketClient) SetState(newState server.ClientStateHandler, sync ...bool) {
+	c.client.SetState(newState, sync...)
 }
 
 func NewWebSocketClient(hub *server.Hub, writer http.ResponseWriter, request *http.Request) (server.ClientInterfacer, error) {
@@ -92,21 +67,23 @@ func (c *WebSocketClient) Id() uint64 {
 	return c.id
 }
 
-func (c *WebSocketClient) ProcessMessage(senderId uint64, message packets.Msg) {
-	c.state.HandleMessage(senderId, message)
+func (c *WebSocketClient) ProcessMessage(senderId uint64, message packets.Msg, enetChannel ...int) {
+	c.client.ProcessMessage(senderId, message, server.WebSocket)
 }
 
 func (c *WebSocketClient) Initialize(id uint64) {
 	c.id = id
 	c.logger.SetPrefix(fmt.Sprintf("Client %d: ", c.id))
-	c.SetState(&states.EnetConnection{})
+	c.SetState(&states.EnetConnection{
+		Hub: c.hub,
+	})
 }
 
-func (c *WebSocketClient) SocketSend(message packets.Msg) {
+func (c *WebSocketClient) SocketSend(message packets.Msg, enetChannel ...int) {
 	c.SocketSendAs(message, c.id)
 }
 
-func (c *WebSocketClient) SocketSendAs(message packets.Msg, senderId uint64) {
+func (c *WebSocketClient) SocketSendAs(message packets.Msg, senderId uint64, enetChannel ...int) {
 	select {
 	case c.sendChan <- &packets.Packet{SenderId: senderId, Msg: message}:
 	default:
@@ -120,8 +97,8 @@ func (c *WebSocketClient) PassToPeer(message packets.Msg, peerId uint64) {
 	}
 }
 
-func (c *WebSocketClient) Broadcast(message packets.Msg) {
-	c.hub.BroadcastChan <- &packets.Packet{SenderId: c.id, Msg: message}
+func (c *WebSocketClient) Broadcast(message packets.Msg, enet bool) {
+	c.hub.BroadcastChan <- &server.BroadcastItem{Packet: &packets.Packet{SenderId: c.id, Msg: message}, Enet: enet}
 }
 
 func (c *WebSocketClient) ReadPump() {
@@ -133,8 +110,18 @@ func (c *WebSocketClient) ReadPump() {
 	for {
 		_, data, err := c.conn.ReadMessage()
 		if err != nil {
-			if websocket.IsUnexpectedCloseError(err, websocket.CloseGoingAway, websocket.CloseAbnormalClosure) {
-				c.logger.Printf("Error: %v", err)
+			c.logger.Printf("ReadMessage error: %T: %v", err, err)
+
+			if websocket.IsCloseError(err,
+				websocket.CloseNormalClosure,
+				websocket.CloseGoingAway,
+				websocket.CloseAbnormalClosure,
+			) {
+				c.logger.Printf("WebSocket closed (one of: normal/going away/abnormal)")
+			}
+
+			if ce, ok := err.(*websocket.CloseError); ok {
+				c.logger.Printf("WebSocket close details: code=%d text=%q", ce.Code, ce.Text)
 			}
 			break
 		}

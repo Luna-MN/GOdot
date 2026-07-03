@@ -3,14 +3,21 @@
 package packets;
 option go_package = "pkg/packets";
 
-message ChatMessage { string msg = 1; }
+message Vector3Msg { float x = 1; float y = 2; float z = 3; }
+enum ChatType { Nothing = 0; Global = 1; Local = 2; Party = 3; Max = 4; }
+
+
+message ChatMessage { ChatType type = 1; string msg = 2; string Username = 3;}
 message IdMessage { uint64 id = 1; }
+message enetAuthKeyMessage { uint64 id = 1; bytes key = 2; int64 expiresAt = 3; }
 message LoginRequestMessage { string username = 1; string password = 2; }
 message RegisterRequestMessage { string username = 1; string password = 2; }
 message OkResponseMessage { }
 message DenyResponseMessage { string reason = 1; }
-message PlayerMessage { uint64 id = 1; string name = 2; float x = 3; float y = 4; float z = 5; float direction = 6; float speed = 7;}
-message PlayerInputMessage  { float x = 1; float y = 2; float z = 3; }
+message PlayerMessage { uint64 clientId = 1; uint64 characterId = 2; string name = 3; uint32 level = 4; Vector3Msg position = 5; float direction = 6; float speed = 7; Vector3Msg rotation = 8; }
+message PlayerInputMessage  { Vector3Msg position = 1; Vector3Msg rotation = 2; }
+message UsersCharacterMessage { repeated PlayerMessage players = 1; }
+message CommandMessage { string command = 1; repeated string args = 2; }
 // more message types here
 
 
@@ -28,6 +35,9 @@ message Packet {
         DenyResponseMessage Deny = 7;
         PlayerMessage Player = 8;
         PlayerInputMessage player_input = 9;
+        enetAuthKeyMessage key = 10;
+        UsersCharacterMessage characters = 11;
+        CommandMessage command = 12;
         //...
     }
 }

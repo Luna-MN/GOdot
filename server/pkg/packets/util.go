@@ -6,10 +6,11 @@ import (
 
 type Msg = isPacket_Msg
 
-func NewChat(msg string) *Packet_Chat {
+func NewChat(msg string, msgType ChatType) *Packet_Chat {
 	return &Packet_Chat{
 		Chat: &ChatMessage{
-			Msg: msg,
+			Msg:  msg,
+			Type: msgType,
 		},
 	}
 }
@@ -36,15 +37,20 @@ func NewDeny(reason string) Msg {
 	}
 }
 
-func NewPlayer(id uint64, player *objects.Player) Msg {
-	return &Packet_Player{
-		Player: &PlayerMessage{
-			Id:    id,
-			Name:  player.Name,
-			X:     player.Position.X,
-			Y:     player.Position.Y,
-			Z:     player.Position.Z,
-			Speed: player.Speed,
+func NewKey(id uint64, key []byte, timestamp int64) Msg {
+	return &Packet_Key{
+		Key: &EnetAuthKeyMessage{
+			Id:        id,
+			Key:       key,
+			ExpiresAt: timestamp,
 		},
 	}
+}
+
+func NewVector3(x, y, z float32) *Vector3Msg {
+	return &Vector3Msg{X: x, Y: y, Z: z}
+}
+
+func UnpackVector3(v *Vector3Msg) objects.Vector3 {
+	return objects.Vector3{X: v.X, Y: v.Y, Z: v.Z}
 }

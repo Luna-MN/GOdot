@@ -39,49 +39,35 @@ type ClientStateHandler interface {
 	Name() string
 
 	// SetClient Inject thje client into the state machine
-	SetClient(client ClientInterfacer)
-
+	SetClient(client *Client)
+	CanReceiveGlobalChat() bool
 	OnEnter()
-	HandleMessage(senderId uint64, message packets.Msg)
+	HandleMessage(senderId uint64, message packets.Msg, transfer TransferType)
 	// OnExit clean up the state machine
 	OnExit()
-}
-type Client struct {
-	ClientId uint64
-	ENet     ClientInterfacer
-	WS       ClientInterfacer
-}
-
-func NewClient(WS ClientInterfacer) Client {
-	return Client{
-		ClientId: 0,
-		ENet:     nil,
-		WS:       WS,
-	}
 }
 
 type ClientInterfacer interface {
 	// Initialize sets the client's Id and anything else to be initialized
 	Initialize(id uint64)
-	SetState(newState ClientStateHandler)
+	SetState(newState ClientStateHandler, sync ...bool)
 	Id() uint64
-	Enet() ClientInterfacer
-	SetEnet(Enet ClientInterfacer)
-	WS() ClientInterfacer
-	SetWS(WS ClientInterfacer)
-	ProcessMessage(senderId uint64, msg packets.Msg)
+	IsEnet() bool
+	SetClient(client *Client)
+	Client() *Client
+	ProcessMessage(senderId uint64, msg packets.Msg, enetChannel ...int)
 
 	// SocketSend Puts data from this client into the write pump
-	SocketSend(message packets.Msg)
+	SocketSend(message packets.Msg, enetChannel ...int)
 
 	// SocketSendAs puts data from another client into the write pump
-	SocketSendAs(message packets.Msg, senderId uint64)
+	SocketSendAs(message packets.Msg, senderId uint64, enetChannel ...int)
 
 	// PassToPeer forward message to another client for processing
 	PassToPeer(message packets.Msg, peerId uint64)
 
 	// Broadcast send message to all clients except the sender
-	Broadcast(message packets.Msg)
+	Broadcast(message packets.Msg, enet bool)
 
 	// ReadPump Pump data from the connected socket directly to the client
 	ReadPump()
@@ -97,15 +83,21 @@ type ClientInterfacer interface {
 	// Close closes the connection
 	Close(reason string)
 }
+type BroadcastItem struct {
+	Packet *packets.Packet
+	State  string
+	ToAll  bool
+	Enet   bool
+}
 
 // Hub is the central point of communication for the server, managing connections and broadcasting messages to clients.
 type Hub struct {
-	Clients         *objects.SharedCollection[Client]
-	HomelessClients *objects.SharedCollection[ClientInterfacer]
+	Clients *objects.SharedCollection[*Client]
 	//Clients *objects.SharedCollection[ClientInterfacer]
+	PeerToClient map[uint]*Client
 
 	// Packets in this channel will be processed by all connected clients except the sender
-	BroadcastChan chan *packets.Packet
+	BroadcastChan chan *BroadcastItem
 
 	// Clients that want to register
 	RegisterChan chan ClientInterfacer
@@ -116,6 +108,8 @@ type Hub struct {
 	dbPool *sql.DB
 
 	SharedGameObjects *SharedGameObjects
+
+	PacketCounter uint64
 }
 
 func NewHub() *Hub {
@@ -124,12 +118,12 @@ func NewHub() *Hub {
 		log.Fatal(err)
 	}
 	return &Hub{
-		Clients:         objects.NewSharedCollection[Client](),
-		HomelessClients: objects.NewSharedCollection[ClientInterfacer](),
-		BroadcastChan:   make(chan *packets.Packet),
-		RegisterChan:    make(chan ClientInterfacer),
-		UnregisterChan:  make(chan ClientInterfacer),
-		dbPool:          dbPool,
+		Clients:        objects.NewSharedCollection[*Client](),
+		PeerToClient:   make(map[uint]*Client),
+		BroadcastChan:  make(chan *BroadcastItem),
+		RegisterChan:   make(chan ClientInterfacer),
+		UnregisterChan: make(chan ClientInterfacer),
+		dbPool:         dbPool,
 		SharedGameObjects: &SharedGameObjects{
 			Players: objects.NewSharedCollection[*objects.Player](),
 		},
@@ -146,21 +140,28 @@ func (h *Hub) Run() {
 	for {
 		select {
 		case client := <-h.RegisterChan:
-			var clients = NewClient(client)
+			var clients = NewClient(client, h)
 			var Id = h.Clients.Add(clients)
-			clients.ClientId = Id
+			clients.Initialize(Id)
 			client.Initialize(Id)
 		case client := <-h.UnregisterChan:
-			h.Clients.Remove(client.Id())
+			_, b := h.Clients.Get(client.Id())
+			if b == true {
+				h.Clients.Remove(client.Id())
+			}
 		case packet := <-h.BroadcastChan:
 			//for id, client := range h.Clients {
-			h.Clients.ForEach(func(id uint64, client Client) {
-				if id != packet.SenderId {
-					client.WS.ProcessMessage(packet.SenderId, packet.Msg)
-					if client.ENet != nil {
-						client.ENet.ProcessMessage(packet.SenderId, packet.Msg)
+			transType := WebSocket
+			if packet.Enet {
+				transType = ENet_Channel0
+			}
+			h.Clients.ForEach(func(id uint64, client *Client) {
+				if id != packet.Packet.SenderId {
+					//blocks traffic to clients in a differant state
+					if !packet.ToAll && client.state.Name() != packet.State {
+						return
 					}
-
+					client.ProcessMessage(packet.Packet.SenderId, packet.Packet.Msg, transType)
 				}
 			})
 		}
