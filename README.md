@@ -8,3 +8,5 @@ and includes a state managment system, please use this as a framework for any pr
 Before use you must generate the certification keys for the websocket communications run:
 
 `openssl req -x509 -newkey rsa:4096 -keyout server/cert/server.key -out server/cert/server.crt -days 365 -nodes`
+
+[Documentation](https://github.com/Luna-MN/GOdot-Multiplayer-Docs)
